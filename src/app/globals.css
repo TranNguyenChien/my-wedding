@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fff9f1;
+  --foreground: #2a181a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-display: var(--font-display);
+  --font-script: var(--font-script);
+  --font-body: var(--font-display);
+  --font-time: var(--font-time);
+
+  /* Luxury editorial palette: burgundy + champagne gold on warm ivory/cream
+     grounds. Exact hex values are fixed by the design brief — do not drift
+     toward brighter reds or metallic-yellow golds. */
+  --color-burgundy-900: #3d050c;
+  --color-burgundy-700: #600813;
+  --color-burgundy-600: #812331;
+  --color-gold-500: #c6a15b;
+  --color-gold-400: #d9bd7c;
+  --color-ivory: #f8f2e8;
+  --color-cream: #fff9f1;
+  --color-beige: #e9ded0;
+  --color-text-dark: #2a181a;
+  --color-white: #ffffff;
+
+  /* Lễ Tân Hôn page: deeper wine + warm sand stationery palette. */
+  --font-text: var(--font-be-vietnam);
+  --color-wine: #78131d;
+  --color-wine-dark: #4c080e;
+  --color-wine-soft: #6f1019;
+  --color-linen: #fbf5ea;
+  --color-sand: #f1e6d8;
+  --color-bronze: #a4724e;
+  --color-champagne: #efd4aa;
+  --color-cocoa: #402628;
+  --color-taupe: #756465;
+
+  /* Bottom scroll cue on the hero. */
+  --animate-scroll-cue: scroll-cue 2.2s ease-in-out infinite;
+
+  /* Gentle idle float for the envelope button. */
+  --animate-envelope-float: envelope-float 4.5s ease-in-out infinite;
+
+  /* Equalizer bars on the Lễ Tân Hôn music button. */
+  --animate-music-bar: music-bar 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes music-bar {
+  to {
+    height: 16px;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(-100%);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+@keyframes envelope-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll-cue,
+  .animate-envelope-float {
+    animation: none;
+  }
+}

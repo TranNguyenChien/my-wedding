@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Pasted into the Google Apps Script editor, not run by this app.
+    "scripts/google-apps-script.js",
   ]),
 ]);
 
