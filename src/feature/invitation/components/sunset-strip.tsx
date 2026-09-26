@@ -51,7 +51,7 @@ const SunsetStrip: React.FC = () => {
       <div data-strip-media className="absolute -inset-y-[15%] inset-x-0">
         <Image
           src={content.images.sunset}
-          alt={`${content.groomName} và ${content.brideName} cùng bước về phía trước`}
+          alt={`${content.firstName} và ${content.secondName} cùng bước về phía trước`}
           fill
           sizes="(min-width: 512px) 512px, 100vw"
           className="object-cover object-[center_35%] saturate-[.72] sepia-[.08]"

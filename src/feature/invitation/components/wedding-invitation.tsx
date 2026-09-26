@@ -17,6 +17,7 @@ import LetterGate from "./letter-gate";
 import LoveStorySection from "./love-story-section";
 import MusicControl from "./music-control";
 import RsvpSection from "./rsvp-section";
+import ScrollToTop from "./scroll-to-top";
 import SunsetStrip from "./sunset-strip";
 import InvitationFooter from "./invitation-footer";
 import WeddingInfoSection from "./wedding-info-section";
@@ -75,7 +76,10 @@ const WeddingInvitation: React.FC<WeddingInvitationProps> = ({ content }) => {
 
       <div inert={!isOpen} className="bg-linen text-cocoa">
         {isOpen && (
-          <MusicControl playing={audio.playing} onToggle={audio.toggle} />
+          <>
+            <MusicControl playing={audio.playing} onToggle={audio.toggle} />
+            <ScrollToTop />
+          </>
         )}
 
         <main id="noi-dung" className="overflow-hidden">

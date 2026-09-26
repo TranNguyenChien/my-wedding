@@ -41,7 +41,11 @@ const AlbumViewer: React.FC<AlbumViewerProps> = ({ startIndex, onClosed }) => {
       gsap
         .timeline({ defaults: { ease: "power3.out" } })
         .from(rootRef.current, { autoAlpha: 0, duration: 0.35 })
-        .from("[data-viewer-chrome]", { autoAlpha: 0, y: 12, duration: 0.45, stagger: 0.06 }, 0.15);
+        .from(
+          "[data-viewer-chrome]",
+          { autoAlpha: 0, y: 12, duration: 0.45, stagger: 0.06 },
+          0.15,
+        );
     },
     { scope: rootRef },
   );
@@ -137,10 +141,14 @@ const AlbumViewer: React.FC<AlbumViewerProps> = ({ startIndex, onClosed }) => {
         <p className="font-text text-[9px] font-medium tracking-[4px] text-[#d9bf9b]">
           OUR MEMORIES
         </p>
-        <p aria-live="polite" className="font-display text-[18px] leading-none tracking-[1px]">
+        <p
+          aria-live="polite"
+          className="font-display text-[18px] leading-none tracking-[1px]"
+        >
           {String(index + 1).padStart(2, "0")}
           <span className="text-[#d9bf9b]/60">
-            {" "}/ {String(photos.length).padStart(2, "0")}
+            {" "}
+            / {String(photos.length).padStart(2, "0")}
           </span>
         </p>
         <button
@@ -199,7 +207,7 @@ const AlbumViewer: React.FC<AlbumViewerProps> = ({ startIndex, onClosed }) => {
 
       <div
         data-viewer-chrome
-        className="mt-3 flex gap-1.5 overflow-x-auto px-4 pb-1 [scrollbar-width:none]"
+        className="mt-3 flex gap-1.5 overflow-x-auto px-4 pb-1 scrollbar-none"
       >
         {photos.map((item, i) => (
           <button
@@ -212,7 +220,7 @@ const AlbumViewer: React.FC<AlbumViewerProps> = ({ startIndex, onClosed }) => {
             aria-label={`Xem ảnh ${i + 1}`}
             aria-current={i === index}
             className={cn(
-              "relative h-[62px] w-[44px] shrink-0 cursor-pointer overflow-hidden rounded-md transition-[opacity,outline-color] duration-300 outline-2 outline-offset-2",
+              "relative h-15.5 w-11 shrink-0 cursor-pointer overflow-hidden rounded-md transition-[opacity,outline-color] duration-300 outline-2 outline-offset-2",
               i === index
                 ? "opacity-100 outline-[#d9b579]"
                 : "opacity-45 outline-transparent hover:opacity-80",

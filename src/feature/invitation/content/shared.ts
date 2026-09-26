@@ -1,5 +1,5 @@
 import { site } from "@/constants/site";
-import type { InvitationContent } from "../types";
+import type { GiftRecipient, InvitationContent } from "../types";
 
 /** Ảnh trong `public/images/gallery/`, theo thứ tự hiển thị ở Album. */
 const GALLERY_PHOTOS = [
@@ -44,18 +44,70 @@ const ALBUM_CAPTIONS: (string | undefined)[] = [
   "Một đời thương nhớ",
 ];
 
+const GROOM_PROFILE = {
+  role: "CHÚ RỂ",
+  name: site.groom.shortName,
+  bio: "Là người luôn ở bên, chọn yêu thương mỗi ngày và cùng em đi hết những hành trình phía trước.",
+};
+
+const BRIDE_PROFILE = {
+  role: "CÔ DÂU",
+  name: site.bride.shortName,
+  bio: "Là cô gái tin vào những điều dịu dàng, và may mắn vì luôn có anh đồng hành trong từng khoảnh khắc.",
+};
+
+/**
+ * TODO: thay `qr` bằng đường dẫn ảnh QR thật (vd. "/images/qr-groom.png")
+ * và điền ngân hàng / số tài khoản trước khi phát hành.
+ */
+const GROOM_GIFT: GiftRecipient = {
+  key: "groom",
+  tab: "Chú rể",
+  role: "CHÚ RỂ",
+  name: site.groom.shortName,
+  bank: "Đang cập nhật",
+  account: "XXXXXXXXXXXX",
+  qr: null,
+};
+
+const BRIDE_GIFT: GiftRecipient = {
+  key: "bride",
+  tab: "Cô dâu",
+  role: "CÔ DÂU",
+  name: site.bride.shortName,
+  bank: "Đang cập nhật",
+  account: "XXXXXXXXXXXX",
+  qr: null,
+};
+
+/** Chú rể đứng trước — dùng cho Lễ Tân Hôn (nhà trai). */
+export const groomFirst = {
+  firstName: site.groom.shortName,
+  secondName: site.bride.shortName,
+  monogram: { first: "C", second: "N" },
+  profiles: [GROOM_PROFILE, BRIDE_PROFILE],
+  giftRecipients: [GROOM_GIFT, BRIDE_GIFT],
+} satisfies Partial<InvitationContent>;
+
+/** Cô dâu đứng trước — dùng cho Lễ Vu Quy (nhà gái). */
+export const brideFirst = {
+  firstName: site.bride.shortName,
+  secondName: site.groom.shortName,
+  monogram: { first: "N", second: "C" },
+  profiles: [BRIDE_PROFILE, GROOM_PROFILE],
+  giftRecipients: [BRIDE_GIFT, GROOM_GIFT],
+} satisfies Partial<InvitationContent>;
+
 /**
  * Phần giống nhau giữa hai trang. Tên cô dâu / chú rể lấy từ `site` để các
- * trang không lệch nhau.
+ * trang không lệch nhau; thứ tự tên do từng trang chọn (`groomFirst` /
+ * `brideFirst`).
  */
 export const shared = {
-  groomName: site.groom.shortName,
-  brideName: site.bride.shortName,
-  monogram: { groom: "C", bride: "N" },
   audioSrc: "/audio/le-tan-hon.mp3",
 
   images: {
-    hero: "/images/gallery/CN0091.jpg",
+    hero: "/images/gallery/CN0113.jpg",
     couple: "/images/gallery/CN0123.jpg",
     sunset: "/images/gallery/TH_02374.jpg",
     venue: "/images/wedding/tan-hon-venue-v2.png",
@@ -64,67 +116,28 @@ export const shared = {
     storyLine: "/images/icons/line.png",
   },
 
-  profiles: [
-    {
-      role: "CHÚ RỂ",
-      name: site.groom.shortName,
-      bio: "Là người luôn ở bên, chọn yêu thương mỗi ngày và cùng em đi hết những hành trình phía trước.",
-    },
-    {
-      role: "CÔ DÂU",
-      name: site.bride.shortName,
-      bio: "Là cô gái tin vào những điều dịu dàng, và may mắn vì luôn có anh đồng hành trong từng khoảnh khắc.",
-    },
-  ],
-
   album: GALLERY_PHOTOS.map((file, i) => ({
     src: `/images/gallery/${file}`,
     alt: `Ảnh cưới của Chiến và Ngọc (${i + 1})`,
     caption: ALBUM_CAPTIONS[i],
   })),
-
-  /**
-   * TODO: thay `qr` bằng đường dẫn ảnh QR thật (vd. "/images/qr-groom.png")
-   * và điền ngân hàng / số tài khoản trước khi phát hành.
-   */
-  giftRecipients: [
-    {
-      key: "groom",
-      tab: "Chú rể",
-      role: "CHÚ RỂ",
-      name: site.groom.shortName,
-      bank: "Đang cập nhật",
-      account: "XXXXXXXXXXXX",
-      qr: null,
-    },
-    {
-      key: "bride",
-      tab: "Cô dâu",
-      role: "CÔ DÂU",
-      name: site.bride.shortName,
-      bank: "Đang cập nhật",
-      account: "XXXXXXXXXXXX",
-      qr: null,
-    },
-  ],
 } satisfies Partial<InvitationContent>;
 
-/** Các mốc Love Story; mốc cuối là ngày cưới của từng trang. */
 export const storyUntil = (weddingDate: string): InvitationContent["story"] => [
   {
-    date: "12.03.2022",
+    date: "01.01.2024",
     title: "Lần đầu gặp gỡ",
     text: "Một cuộc gặp gỡ tình cờ, nhưng lại là khởi đầu cho tất cả.",
     step: 0.04,
   },
   {
-    date: "20.08.2023",
+    date: "17.05.2025",
     title: "Cùng nhau trưởng thành",
     text: "Đi qua nhiều hành trình, ở lại vì cùng nhìn về một hướng.",
     step: 0.3,
   },
   {
-    date: "14.02.2025",
+    date: "24.08.2026",
     title: "Anh ngỏ lời, em nói đồng ý",
     text: "Một lời hẹn ước được viết nên từ những điều bình dị.",
     step: 0.58,

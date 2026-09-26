@@ -76,7 +76,7 @@ const RsvpSection: React.FC = () => {
   const successMessage =
     submitted?.attendance === "yes"
       ? `Cảm ơn bạn! Gia đình đã ghi nhận ${submitted.guestCount} người tham dự vào ngày ${content.dateShort}.`
-      : `Gia đình đã nhận được lời nhắn. Cảm ơn bạn đã dành tình cảm cho ${content.groomName} và ${content.brideName}.`;
+      : `Gia đình đã nhận được lời nhắn. Cảm ơn bạn đã dành tình cảm cho ${content.firstName} và ${content.secondName}.`;
 
   return (
     <section

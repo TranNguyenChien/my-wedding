@@ -1,10 +1,11 @@
 import { site } from "@/constants/site";
 import type { InvitationContent } from "../types";
-import { shared, storyUntil } from "./shared";
+import { brideFirst, shared, storyUntil } from "./shared";
 
 /** Lễ Vu Quy — nhà gái, Quảng Trị. Thông tin lấy theo `site.le_vu_quy_*`. */
 export const vuQuy: InvitationContent = {
   ...shared,
+  ...brideFirst,
   eventName: "LỄ VU QUY",
   dateIso: "2026-10-26",
   dateDots: "26 · 10 · 2026",

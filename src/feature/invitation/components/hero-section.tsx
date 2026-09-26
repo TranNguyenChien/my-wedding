@@ -8,6 +8,7 @@ import {
   gsap,
   prefersReducedMotion,
 } from "@/components/motion/gsap-setup";
+import { cn } from "@/lib/utils";
 import { useInvitation } from "../invitation-context";
 import Wave from "./ui/wave";
 
@@ -27,10 +28,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ isOpen }) => {
       ensureGsapReady();
       if (prefersReducedMotion()) return;
 
-      if (!imageOnly) gsap.set("[data-hero-line]", { autoAlpha: 0, y: 24 });
+      if (!imageOnly) gsap.set("[data-hero-line]", { autoAlpha: 0, y: 28 });
       gsap.set("[data-hero-media]", { scale: 1.12 });
       gsap.to("[data-hero-media]", {
-        yPercent: 12,
+        yPercent: 10,
         ease: "none",
         scrollTrigger: {
           trigger: rootRef.current,
@@ -51,14 +52,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({ isOpen }) => {
         .timeline({ defaults: { ease: "power3.out" } })
         .to("[data-hero-media]", {
           scale: 1,
-          duration: 1.8,
+          duration: 2,
           ease: "power2.out",
         });
       if (!imageOnly) {
         intro.to(
           "[data-hero-line]",
-          { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.12 },
-          0.25,
+          { autoAlpha: 1, y: 0, duration: 1, stagger: 0.14 },
+          0.35,
         );
       }
     },
@@ -70,54 +71,57 @@ const HeroSection: React.FC<HeroSectionProps> = ({ isOpen }) => {
       ref={rootRef}
       aria-labelledby={imageOnly ? undefined : "hero-title"}
       aria-label={
-        imageOnly ? `${content.groomName} & ${content.brideName}` : undefined
+        imageOnly ? `${content.firstName} & ${content.secondName}` : undefined
       }
-      className="relative h-152.5 overflow-hidden bg-[#d8b99f] text-[#5f1219]"
+      className={cn(
+        "relative overflow-hidden bg-wine-dark",
+        imageOnly ? "aspect-2/3" : "min-h-dvh max-h-225 text-[#fff8ec]",
+      )}
     >
       <div data-hero-media className="absolute inset-0">
         <Image
           src={content.images.hero}
-          alt={`${content.groomName} và ${content.brideName} trong ngày cưới`}
+          alt={`${content.firstName} và ${content.secondName} trong ngày cưới`}
           fill
           preload
           sizes="(min-width: 512px) 512px, 100vw"
           className="object-cover object-[58%_center]"
         />
       </div>
+
       {!imageOnly && (
         <>
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-[linear-gradient(90deg,#f3dfcbd9_0,#f3dfcb80_45%,transparent_80%),linear-gradient(180deg,transparent_60%,#400a102e)]"
+            className="absolute inset-0 bg-[linear-gradient(180deg,#2a04081f_0%,transparent_30%,transparent_48%,#2a0408b3_78%,#1f0306eb_100%)]"
           />
 
-          <div className="absolute top-[10%] left-[7%] z-3 w-[62%]">
+          <div className="absolute inset-x-6 bottom-28 z-5">
             <p
               data-hero-line
-              className="font-text text-[8px] font-medium tracking-[4px]"
+              className="font-text text-[11px] font-medium tracking-[0.3em] text-champagne uppercase"
             >
-              THE WEDDING OF
+              {content.eventName}
             </p>
             <h1
               id="hero-title"
-              className="mt-3.5 mb-3.5 font-display text-[32px] leading-[1.08] tracking-[-1px]"
+              className="mt-4 font-display text-[48px] leading-[0.95] font-light tracking-[-0.03em]"
             >
-              <span data-hero-line className="block uppercase">
-                {content.groomName}
+              <span data-hero-line className="block">
+                {content.firstName}
               </span>
-              <i data-hero-line className="ml-1 block text-[0.7em] leading-[1.05]">
-                &amp;
-              </i>
-              <span data-hero-line className="block uppercase">
-                {content.brideName}
+              <span data-hero-line className="block pb-1 pl-5 mt-4">
+                <em className="pr-2 font-normal text-champagne">&amp;</em>
+                {content.secondName}
               </span>
             </h1>
             <time
               data-hero-line
               dateTime={content.dateIso}
-              className="block font-text text-[10px] font-medium tracking-[4px]"
+              className="nums mt-6 flex items-center gap-4 font-display text-[22px] leading-none italic text-[#f6e6cf]"
             >
-              {content.dateDots}
+              <span aria-hidden="true" className="h-px w-10 bg-champagne/60" />
+              {content.dateShort}
             </time>
           </div>
         </>

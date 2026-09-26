@@ -1,9 +1,10 @@
 import type { InvitationContent } from "../types";
-import { shared, storyUntil } from "./shared";
+import { groomFirst, shared, storyUntil } from "./shared";
 
 /** Lễ Tân Hôn — nhà trai, Lâm Đồng. */
 export const tanHon: InvitationContent = {
   ...shared,
+  ...groomFirst,
   eventName: "LỄ TÂN HÔN",
   dateIso: "2026-10-29",
   dateDots: "29 · 10 · 2026",

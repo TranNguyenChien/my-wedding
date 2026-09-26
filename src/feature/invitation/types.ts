@@ -17,9 +17,13 @@ export interface GiftRecipient {
 export interface InvitationContent {
   /** Tên buổi lễ hiện ở màn thư, vd. "LỄ TÂN HÔN". */
   eventName: string;
-  groomName: string;
-  brideName: string;
-  monogram: { groom: string; bride: string };
+  /**
+   * Tên theo thứ tự hiển thị: Tân Hôn (nhà trai) chú rể trước, Vu Quy (nhà
+   * gái) cô dâu trước. `profiles` và `giftRecipients` cũng theo thứ tự này.
+   */
+  firstName: string;
+  secondName: string;
+  monogram: { first: string; second: string };
   dateIso: string;
   dateDots: string;
   dateShort: string;

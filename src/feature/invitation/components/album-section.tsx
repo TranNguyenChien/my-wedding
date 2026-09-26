@@ -164,7 +164,7 @@ const AlbumSection: React.FC = () => {
         </span>
         <i aria-hidden="true" className="h-px flex-1 bg-[#b78c71]/25" />
         <b aria-hidden="true" className="font-script text-[27px] leading-none font-normal">
-          {content.monogram.groom} &amp; {content.monogram.bride}
+          {content.monogram.first} &amp; {content.monogram.second}
         </b>
       </Reveal>
 

@@ -26,10 +26,10 @@ const WaxSeal: React.FC = () => {
     >
       <span className="absolute inset-2.75 rounded-full border border-[#e2c28f]/40" />
       <b className="absolute top-3.5 left-4 font-display text-[28px] leading-none font-normal text-[#ead1a6]">
-        {content.monogram.groom}
+        {content.monogram.first}
       </b>
       <i className="absolute right-3 bottom-2 font-script text-[29px] leading-none text-[#d9b579] not-italic">
-        {content.monogram.bride}
+        {content.monogram.second}
       </i>
     </span>
   );
@@ -141,13 +141,13 @@ const LetterGate: React.FC<LetterGateProps> = ({ onOpenStart, onOpened }) => {
         aria-hidden="true"
         className="pointer-events-none absolute top-1/2 -left-[4vw] -translate-y-1/2 font-display text-[clamp(300px,42vw,650px)] leading-none text-[#f6dfbd]/[0.03]"
       >
-        {content.monogram.groom}
+        {content.monogram.first}
       </span>
       <span
         aria-hidden="true"
         className="pointer-events-none absolute top-1/2 -right-[4vw] -translate-y-1/2 font-display text-[clamp(300px,42vw,650px)] leading-none text-[#f6dfbd]/[0.03]"
       >
-        {content.monogram.bride}
+        {content.monogram.second}
       </span>
 
       <div className="relative z-[2] grid h-[min(575px,81svh)] w-[min(390px,calc(100vw-42px))] place-items-center drop-shadow-[0_32px_36px_#25030855]">
@@ -189,10 +189,10 @@ const LetterGate: React.FC<LetterGateProps> = ({ onOpenStart, onOpened }) => {
           >
             <span className="absolute inset-[7px] rounded-full border border-[#b88b67]/30" />
             <span className="absolute top-3 left-4 font-display text-[29px] leading-none">
-              {content.monogram.groom}
+              {content.monogram.first}
             </span>
             <span className="absolute right-3 bottom-2 font-script text-[31px] leading-none text-[#b07a52]">
-              {content.monogram.bride}
+              {content.monogram.second}
             </span>
           </div>
 
@@ -210,7 +210,7 @@ const LetterGate: React.FC<LetterGateProps> = ({ onOpenStart, onOpened }) => {
 
           <div className="mt-7 w-full border-t border-[#98675d]/15 px-1 pt-5 text-center text-[#746262] [@media(max-height:700px)]:mt-5 [@media(max-height:700px)]:pt-4">
             <p className="mb-2.5 font-display text-[16px] leading-tight text-[#6e1920] italic [@media(max-height:700px)]:text-[13px]">
-              Thân gửi bạn,
+              Thân gửi,
             </p>
             <p className="font-text text-[9px] leading-[1.8] font-light [@media(max-height:700px)]:text-[8px]">
               Trân trọng mời bạn đến chung vui
@@ -223,13 +223,13 @@ const LetterGate: React.FC<LetterGateProps> = ({ onOpenStart, onOpened }) => {
 
           <div className="mt-auto flex items-center justify-center gap-2.5">
             <strong className="font-display text-[15px] leading-none font-normal">
-              {content.groomName}
+              {content.firstName}
             </strong>
             <i className="font-script text-[22px] leading-none text-[#b07a52] not-italic">
               &amp;
             </i>
             <strong className="font-display text-[15px] leading-none font-normal">
-              {content.brideName}
+              {content.secondName}
             </strong>
           </div>
           <time
@@ -243,7 +243,7 @@ const LetterGate: React.FC<LetterGateProps> = ({ onOpenStart, onOpened }) => {
             data-gate-seal
             type="button"
             onClick={handleOpen}
-            aria-label={`Mở thiệp cưới của ${content.groomName} và ${content.brideName}`}
+            aria-label={`Mở thiệp cưới của ${content.firstName} và ${content.secondName}`}
             className="group absolute -bottom-[39px] left-1/2 z-[5] flex w-[118px] -translate-x-1/2 cursor-pointer flex-col items-center gap-2 rounded-full focus-visible:outline-1 focus-visible:outline-offset-[6px] focus-visible:outline-[#efcf9f]"
           >
             <span data-gate-seal-disc className="block">

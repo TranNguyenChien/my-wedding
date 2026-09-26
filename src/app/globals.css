@@ -60,6 +60,26 @@ body {
   color: var(--foreground);
 }
 
+/* Cormorant mặc định dùng số kiểu cũ (lên xuống dòng) — ngày giờ cần số thẳng hàng. */
+@utility nums {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/*
+ * Vân giấy mịn phủ toàn trang để nền linen có chất liệu như thiệp in.
+ * Cố định + pointer-events-none để không repaint khi cuộn.
+ */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 @keyframes scroll-cue {
   0%,
   100% {

@@ -165,7 +165,7 @@ const GiftSection: React.FC = () => {
         </button>
 
         <small className="mt-7 block font-text text-[7px] font-medium tracking-[3.5px] text-[#97766d] uppercase">
-          {content.groomName}&nbsp;&nbsp;·&nbsp;&nbsp;{content.brideName}
+          {content.firstName}&nbsp;&nbsp;·&nbsp;&nbsp;{content.secondName}
         </small>
       </Reveal>
 
