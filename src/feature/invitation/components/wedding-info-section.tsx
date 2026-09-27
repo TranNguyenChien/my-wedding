@@ -221,9 +221,8 @@ const WeddingInfoSection: React.FC = () => {
             title="Ngày cưới"
             titleId="info-title"
           >
-            Chúng mình rất mong được đón tiếp những người
-            <br />
-            thân yêu trong ngày trọng đại này!
+            Chúng mình rất mong được đón tiếp những người thân yêu trong ngày
+            trọng đại này!
           </SectionHeading>
         </Reveal>
 

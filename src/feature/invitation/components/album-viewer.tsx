@@ -3,6 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
+import {
+  CaretLeftIcon,
+  CaretRightIcon,
+  XIcon,
+} from "@phosphor-icons/react/ssr";
 import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion } from "@/components/motion/gsap-setup";
 import { cn } from "@/lib/utils";
@@ -123,7 +128,7 @@ const AlbumViewer: React.FC<AlbumViewerProps> = ({ startIndex, onClosed }) => {
   };
 
   const NAV_BUTTON =
-    "absolute top-1/2 z-[2] grid size-10 -translate-y-1/2 cursor-pointer place-items-center rounded-full border border-[#f3dfc4]/25 bg-[#240409]/45 font-text text-[20px] leading-none text-[#fff4e4] backdrop-blur-sm transition-colors duration-300 hover:bg-[#240409]/75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d9b579]";
+    "absolute top-1/2 z-[2] grid size-10 -translate-y-1/2 cursor-pointer place-items-center rounded-full border border-[#f3dfc4]/25 bg-[#240409]/45 text-[#fff4e4] backdrop-blur-sm transition-colors duration-300 hover:bg-[#240409]/75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d9b579]";
 
   return createPortal(
     <div
@@ -156,9 +161,9 @@ const AlbumViewer: React.FC<AlbumViewerProps> = ({ startIndex, onClosed }) => {
           type="button"
           onClick={close}
           aria-label="Đóng album"
-          className="grid size-[34px] cursor-pointer place-items-center rounded-full border border-[#f3dfc4]/25 font-text text-[23px] leading-none font-light transition-[rotate,background-color] duration-300 hover:rotate-90 hover:bg-white/10"
+          className="grid size-[34px] cursor-pointer place-items-center rounded-full border border-[#f3dfc4]/25 transition-[rotate,background-color] duration-300 hover:rotate-90 hover:bg-white/10"
         >
-          ×
+          <XIcon size={16} weight="light" aria-hidden="true" />
         </button>
       </header>
 
@@ -192,7 +197,7 @@ const AlbumViewer: React.FC<AlbumViewerProps> = ({ startIndex, onClosed }) => {
           aria-label="Ảnh trước"
           className={cn(NAV_BUTTON, "left-3")}
         >
-          ‹
+          <CaretLeftIcon size={18} weight="light" aria-hidden="true" />
         </button>
         <button
           data-viewer-chrome
@@ -201,7 +206,7 @@ const AlbumViewer: React.FC<AlbumViewerProps> = ({ startIndex, onClosed }) => {
           aria-label="Ảnh tiếp theo"
           className={cn(NAV_BUTTON, "right-3")}
         >
-          ›
+          <CaretRightIcon size={18} weight="light" aria-hidden="true" />
         </button>
       </div>
 
