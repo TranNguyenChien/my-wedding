@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
+import { ArrowUpRight } from "@phosphor-icons/react/ssr";
 import {
   ensureGsapReady,
   gsap,
@@ -35,24 +36,33 @@ const GiftSection: React.FC = () => {
       gsap.fromTo(
         "[data-gift-float]",
         { y: 0, rotate: -1 },
-        { y: -9, rotate: 1, duration: 1.8, ease: "sine.inOut", yoyo: true, repeat: -1 },
+        {
+          y: -9,
+          rotate: 1,
+          duration: 1.8,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        },
       );
-      gsap.utils.toArray<HTMLElement>("[data-gift-sparkle]").forEach((el, i) => {
-        gsap.fromTo(
-          el,
-          { autoAlpha: 0.18, scale: 0.65, rotate: 0 },
-          {
-            autoAlpha: 0.9,
-            scale: 1.15,
-            rotate: 28,
-            duration: 1.2,
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1,
-            delay: i * 0.7,
-          },
-        );
-      });
+      gsap.utils
+        .toArray<HTMLElement>("[data-gift-sparkle]")
+        .forEach((el, i) => {
+          gsap.fromTo(
+            el,
+            { autoAlpha: 0.18, scale: 0.65, rotate: 0 },
+            {
+              autoAlpha: 0.9,
+              scale: 1.15,
+              rotate: 28,
+              duration: 1.2,
+              ease: "sine.inOut",
+              yoyo: true,
+              repeat: -1,
+              delay: i * 0.7,
+            },
+          );
+        });
     },
     { scope: rootRef },
   );
@@ -73,7 +83,12 @@ const GiftSection: React.FC = () => {
             setSheetOpen(true);
           },
         })
-        .to("[data-gift-pop]", { scale: 0.94, y: 2, duration: 0.18, ease: "power2.in" })
+        .to("[data-gift-pop]", {
+          scale: 0.94,
+          y: 2,
+          duration: 0.18,
+          ease: "power2.in",
+        })
         .to("[data-gift-pop]", {
           scale: 1.08,
           y: -15,
@@ -81,7 +96,11 @@ const GiftSection: React.FC = () => {
           duration: 0.32,
           ease: "back.out(2)",
         })
-        .to("[data-gift-burst]", { scale: 2.2, autoAlpha: 0, duration: 0.4, ease: "power2.out" }, "<")
+        .to(
+          "[data-gift-burst]",
+          { scale: 2.2, autoAlpha: 0, duration: 0.4, ease: "power2.out" },
+          "<",
+        )
         // Đưa hộp quà và sparkle về chỗ cũ trong lúc sheet che phủ.
         .set("[data-gift-pop]", { scale: 1, y: 0, rotate: 0 }, "+=0.35")
         .set("[data-gift-burst]", { scale: 1, autoAlpha: 1 });
@@ -97,10 +116,13 @@ const GiftSection: React.FC = () => {
       ref={rootRef}
       id="mung-cuoi"
       aria-labelledby="gift-title"
-      className="relative overflow-hidden border-t border-[#8f5446]/10 bg-sand px-[8%] pt-[78px] pb-[88px]"
+      className="relative overflow-hidden border-t border-[#8f5446]/10 bg-sand px-[8%] pt-19.5 pb-22"
     >
-      <Reveal className="relative mx-auto w-full max-w-[610px] text-center">
-        <span aria-hidden="true" className="mx-auto mb-7 block h-[37px] w-px bg-[#9c665b]/30" />
+      <Reveal className="relative mx-auto w-full max-w-152.5 text-center">
+        <span
+          aria-hidden="true"
+          className="mx-auto mb-7 block h-9.25 w-px bg-[#9c665b]/30"
+        />
         <p className="mb-5 font-text text-[8px] font-medium tracking-[6px] text-[#8b5f57]">
           WEDDING GIFT
         </p>
@@ -111,9 +133,9 @@ const GiftSection: React.FC = () => {
           Mừng cưới
         </h2>
         <HeartRule />
-        <p className="mx-auto max-w-[500px] font-text text-[11px] leading-[1.8] font-light text-[#766465]">
-          Sự hiện diện của bạn đã là món quà quý giá nhất. Nếu muốn gửi thêm
-          một lời chúc, chúng mình xin trân trọng đón nhận.
+        <p className="mx-auto max-w-125 font-text text-[11px] leading-[1.8] font-light text-[#766465]">
+          Sự hiện diện của bạn đã là món quà quý giá nhất. Nếu muốn gửi thêm một
+          lời chúc, chúng mình xin trân trọng đón nhận.
         </p>
 
         <button
@@ -126,7 +148,7 @@ const GiftSection: React.FC = () => {
         >
           <span
             aria-hidden="true"
-            className="relative block aspect-square w-[210px] drop-shadow-[0_21px_17px_#48101828] transition-[scale] duration-400 group-hover:scale-[1.045]"
+            className="relative block aspect-square w-52.5 drop-shadow-[0_21px_17px_#48101828] transition-[scale] duration-400 group-hover:scale-[1.045]"
           >
             <span className="absolute inset-x-[16%] bottom-[8%] h-[17%] scale-y-[.42] rounded-full bg-[#5b171c]/15 blur-[15px]" />
             {SPARKLES.map((sparkle, i) => (
@@ -134,14 +156,14 @@ const GiftSection: React.FC = () => {
               <span
                 key={i}
                 data-gift-burst
-                className={`absolute z-[3] block leading-none text-[#b78b53] ${sparkle.className}`}
+                className={`absolute z-3 block leading-none text-[#b78b53] ${sparkle.className}`}
               >
                 <i data-gift-sparkle className="block not-italic">
                   {sparkle.glyph}
                 </i>
               </span>
             ))}
-            <span data-gift-float className="relative z-[2] block size-full p-5">
+            <span data-gift-float className="relative z-2 block size-full p-5">
               <span data-gift-pop className="relative block size-full">
                 <Image
                   src={content.images.giftBox}
@@ -153,14 +175,14 @@ const GiftSection: React.FC = () => {
               </span>
             </span>
           </span>
-          <span className="-mt-2 flex items-center gap-3 font-text text-[8px] font-medium tracking-[3px] text-[#8d665e] uppercase before:h-px before:w-[27px] before:bg-[#9f776d]/40">
+          <span className="-mt-2 flex items-center gap-3 font-text text-[8px] font-medium tracking-[3px] text-[#8d665e] uppercase before:h-px before:w-6.75 before:bg-[#9f776d]/40">
             Chạm để mở
-            <i
+            <span
               aria-hidden="true"
-              className="grid size-[27px] place-items-center rounded-full border border-[#98645c]/35 font-display text-[13px] not-italic transition-[rotate,background-color,color] duration-300 group-hover:rotate-45 group-hover:bg-wine group-hover:text-[#fff7e9]"
+              className="grid size-6.75 place-items-center rounded-full border border-[#98645c]/35 transition-[rotate,background-color,color] duration-300 group-hover:rotate-45 group-hover:bg-wine group-hover:text-[#fff7e9]"
             >
-              ↗
-            </i>
+              <ArrowUpRight size={12} weight="bold" />
+            </span>
           </span>
         </button>
 

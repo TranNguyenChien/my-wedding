@@ -1,3 +1,5 @@
+import type { RsvpEvent } from "@/types/rsvp";
+
 export type ScheduleKey = "ceremony" | "reception" | "date";
 
 export interface GiftRecipient {
@@ -17,6 +19,8 @@ export interface GiftRecipient {
 export interface InvitationContent {
   /** Tên buổi lễ hiện ở màn thư, vd. "LỄ TÂN HÔN". */
   eventName: string;
+  /** RSVP của trang này ghi vào sheet riêng theo giá trị này. */
+  rsvpEvent: RsvpEvent;
   /**
    * Tên theo thứ tự hiển thị: Tân Hôn (nhà trai) chú rể trước, Vu Quy (nhà
    * gái) cô dâu trước. `profiles` và `giftRecipients` cũng theo thứ tự này.

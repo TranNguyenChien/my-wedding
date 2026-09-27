@@ -44,7 +44,11 @@ const EndingSection: React.FC = () => {
         duration: 0.9,
         ease: "power3.out",
         stagger: 0.12,
-        scrollTrigger: { trigger: rootRef.current, start: "top 65%", toggleActions: REPLAY_TOGGLE_ACTIONS },
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top 65%",
+          toggleActions: REPLAY_TOGGLE_ACTIONS,
+        },
       });
     },
     { scope: rootRef },
@@ -54,7 +58,7 @@ const EndingSection: React.FC = () => {
     <section
       ref={rootRef}
       aria-label="Lời cảm ơn"
-      className="relative h-[500px] overflow-hidden bg-[#d3b28e] text-[#5d161b]"
+      className="relative h-125 overflow-hidden bg-[#d3b28e] text-[#5d161b]"
     >
       <div data-ending-media className="absolute inset-0">
         <Image

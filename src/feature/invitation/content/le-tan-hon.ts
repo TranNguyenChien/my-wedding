@@ -6,6 +6,8 @@ export const tanHon: InvitationContent = {
   ...shared,
   ...groomFirst,
   eventName: "LỄ TÂN HÔN",
+  rsvpEvent: "le-tan-hon",
+  audioSrc: "/audio/le-tan-hon.mp3",
   dateIso: "2026-10-29",
   dateDots: "29 · 10 · 2026",
   dateShort: "29.10.2026",

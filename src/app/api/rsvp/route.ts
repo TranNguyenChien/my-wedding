@@ -22,10 +22,17 @@ export async function POST(request: Request) {
   const webhookRes = await fetch(webhookUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ type: "rsvp", ...parsed.data }),
+    body: JSON.stringify(parsed.data),
   });
 
-  if (!webhookRes.ok) {
+  // Apps Script always answers 200, so failures only show up in the body.
+  const text = await webhookRes.text();
+  let result: { success?: boolean } | null = null;
+  try {
+    result = JSON.parse(text);
+  } catch {}
+  if (!webhookRes.ok || !result?.success) {
+    console.error("[rsvp] webhook failed", webhookRes.status, text.slice(0, 500));
     return Response.json(
       { success: false, error: "Không thể gửi phản hồi" },
       { status: 502 },

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
+import { X } from "@phosphor-icons/react/ssr";
 import { gsap, prefersReducedMotion } from "@/components/motion/gsap-setup";
 import { cn } from "@/lib/utils";
 import { useInvitation } from "../../invitation-context";
@@ -33,16 +34,36 @@ const GiftSheet: React.FC<GiftSheetProps> = ({ onClosed }) => {
         .timeline({ defaults: { ease: "power3.out" } })
         .from("[data-sheet-backdrop]", { autoAlpha: 0, duration: 0.35 })
         .from("[data-sheet-panel]", { yPercent: 100, duration: 0.5 }, 0)
-        .from("[data-sheet-panel] > *", { autoAlpha: 0, y: 16, duration: 0.45, stagger: 0.05 }, 0.2);
+        .from(
+          "[data-sheet-panel] > *",
+          { autoAlpha: 0, y: 16, duration: 0.45, stagger: 0.05 },
+          0.2,
+        );
     },
     { scope: rootRef },
   );
 
+  // Chỉ animate khi đổi tab. Lúc mount, timeline mở sheet đang ẩn #gift-panel
+  // (visibility: hidden), GSAP sẽ đọc visibility kế thừa đó thành trạng thái cuối
+  // của autoAlpha và để QR kẹt ở opacity 0.
+  const animatedIndexRef = useRef(activeIndex);
   useGSAP(
     () => {
+      if (animatedIndexRef.current === activeIndex) return;
+      animatedIndexRef.current = activeIndex;
       if (prefersReducedMotion()) return;
-      gsap.from("[data-sheet-account]", { autoAlpha: 0, x: 14, duration: 0.4, ease: "power2.out" });
-      gsap.from("[data-sheet-qr]", { scale: 0.94, autoAlpha: 0.4, duration: 0.4, ease: "power2.out" });
+      gsap.from("[data-sheet-account]", {
+        autoAlpha: 0,
+        x: 14,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+      gsap.from("[data-sheet-qr]", {
+        scale: 0.94,
+        autoAlpha: 0.4,
+        duration: 0.4,
+        ease: "power2.out",
+      });
     },
     { scope: rootRef, dependencies: [activeIndex], revertOnUpdate: true },
   );
@@ -86,7 +107,7 @@ const GiftSheet: React.FC<GiftSheetProps> = ({ onClosed }) => {
     <div
       ref={rootRef}
       onKeyDown={handleKeyDown}
-      className="fixed inset-0 z-[9500] flex items-end justify-center"
+      className="fixed inset-0 z-9500 flex items-end justify-center"
     >
       <button
         data-sheet-backdrop
@@ -101,19 +122,19 @@ const GiftSheet: React.FC<GiftSheetProps> = ({ onClosed }) => {
         role="dialog"
         aria-modal="true"
         aria-labelledby="gift-sheet-title"
-        className="relative z-[1] w-full max-w-lg overflow-hidden rounded-t-[28px] border border-[#9f6d5e]/20 bg-[#fffaf1] px-[22px] pt-9 pb-[max(25px,env(safe-area-inset-bottom))] shadow-[0_38px_95px_#21030770]"
+        className="relative z-1 w-full max-w-lg overflow-hidden rounded-t-[28px] border border-[#9f6d5e]/20 bg-[#fffaf1] px-5.5 pt-9 pb-[max(25px,env(safe-area-inset-bottom))] shadow-[0_38px_95px_#21030770]"
       >
         <span
           aria-hidden="true"
-          className="mx-auto -mt-[22px] mb-6 block h-1 w-[42px] rounded-full bg-[#8d6a63]/25"
+          className="mx-auto -mt-5.5 mb-6 block h-1 w-10.5 rounded-full bg-[#8d6a63]/25"
         />
         <button
           type="button"
           onClick={close}
           aria-label="Đóng"
-          className="absolute top-[19px] right-[17px] z-[2] grid size-[34px] cursor-pointer place-items-center rounded-full border border-[#7a3f3d]/20 font-text text-[23px] leading-none font-light text-[#6f3033] transition-[rotate,background-color] duration-300 hover:rotate-90 hover:bg-[#f3e7d8]"
+          className="absolute top-4.75 right-4.25 z-2 grid size-8.5 cursor-pointer place-items-center rounded-full border border-[#7a3f3d]/20 text-[#6f3033] transition-[rotate,background-color] duration-300 hover:rotate-90 hover:bg-[#f3e7d8]"
         >
-          ×
+          <X size={14} aria-hidden="true" />
         </button>
 
         <header className="text-center">
@@ -126,7 +147,7 @@ const GiftSheet: React.FC<GiftSheetProps> = ({ onClosed }) => {
           >
             Gửi lời chúc
           </h2>
-          <p className="mx-auto mt-3 max-w-[330px] font-text text-[11px] leading-[1.65] font-light text-[#7a6868]">
+          <p className="mx-auto mt-3 max-w-82.5 font-text text-[11px] leading-[1.65] font-light text-[#7a6868]">
             Một chút yêu thương dành cho hành trình mới của chúng mình.
           </p>
         </header>
@@ -150,7 +171,7 @@ const GiftSheet: React.FC<GiftSheetProps> = ({ onClosed }) => {
               tabIndex={index === activeIndex ? 0 : -1}
               onClick={() => setActiveIndex(index)}
               className={cn(
-                "cursor-pointer rounded-full px-[18px] py-3 font-text text-[9px] leading-none font-medium tracking-[2px] uppercase transition-[background-color,color,box-shadow] duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a87561]",
+                "cursor-pointer rounded-full px-4.5 py-3 font-text text-[9px] leading-none font-medium tracking-[2px] uppercase transition-[background-color,color,box-shadow] duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a87561]",
                 index === activeIndex
                   ? "bg-wine text-[#fff8ec] shadow-[0_7px_16px_#4e0b1326]"
                   : "text-[#836b69]",
@@ -165,11 +186,11 @@ const GiftSheet: React.FC<GiftSheetProps> = ({ onClosed }) => {
           id="gift-panel"
           role="tabpanel"
           aria-labelledby={`gift-tab-${recipient.key}`}
-          className="grid grid-cols-[132px_1fr] items-center gap-[19px]"
+          className="grid grid-cols-[132px_1fr] items-center gap-4.75"
         >
           <div
             data-sheet-qr
-            className="relative rounded-[17px] border border-[#a46b5c]/20 bg-white p-[9px] shadow-[0_13px_28px_#4f2d2512] before:pointer-events-none before:absolute before:top-[7px] before:left-[7px] before:size-[22px] before:rounded-tl-[7px] before:border-t before:border-l before:border-wine after:pointer-events-none after:absolute after:right-[7px] after:bottom-[7px] after:size-[22px] after:rounded-br-[7px] after:border-r after:border-b after:border-wine"
+            className="relative rounded-[17px] border border-[#a46b5c]/20 bg-white p-2.25 shadow-[0_13px_28px_#4f2d2512] before:pointer-events-none before:absolute before:top-1.75 before:left-1.75 before:size-5.5 before:rounded-tl-[7px] before:border-t before:border-l before:border-wine after:pointer-events-none after:absolute after:right-1.75 after:bottom-1.75 after:size-5.5 after:rounded-br-[7px] after:border-r after:border-b after:border-wine"
           >
             {recipient.qr ? (
               <div className="relative aspect-square w-full">

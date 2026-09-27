@@ -193,7 +193,7 @@ const WeddingInfoSection: React.FC = () => {
       });
       gsap.from("[data-venue-reveal] > *", {
         autoAlpha: 0,
-        y: 14,
+        y: 0,
         duration: 0.6,
         ease: "power3.out",
         stagger: 0.07,
@@ -422,14 +422,12 @@ const WeddingInfoSection: React.FC = () => {
               {content.venue.address}
             </address>
           </div>
-
           <div
             aria-hidden="true"
             className="relative h-6 bg-cream [mask:radial-gradient(circle_at_0_50%,transparent_11px,#000_11.5px)_left/51%_100%_no-repeat,radial-gradient(circle_at_100%_50%,transparent_11px,#000_11.5px)_right/51%_100%_no-repeat]"
           >
             <span className="absolute inset-x-5 top-1/2 border-t border-dashed border-wine/25" />
           </div>
-
           <div
             data-venue-reveal
             className="grid grid-cols-[1fr_auto] gap-2.5 rounded-b-[22px] bg-cream px-5 pt-2 pb-5"
@@ -460,9 +458,6 @@ const WeddingInfoSection: React.FC = () => {
                 <Copy size={18} aria-hidden="true" />
               )}
             </button>
-            <span role="status" className="sr-only">
-              {copied ? "Đã chép địa chỉ" : ""}
-            </span>
           </div>
         </div>
       </div>

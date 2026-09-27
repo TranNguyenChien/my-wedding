@@ -65,9 +65,9 @@ const GROOM_GIFT: GiftRecipient = {
   tab: "Chú rể",
   role: "CHÚ RỂ",
   name: site.groom.shortName,
-  bank: "Đang cập nhật",
-  account: "XXXXXXXXXXXX",
-  qr: null,
+  bank: "Vietcombank",
+  account: "9355645006",
+  qr: "https://img.vietqr.io/image/VCB-9355645006-qr_only.png",
 };
 
 const BRIDE_GIFT: GiftRecipient = {
@@ -75,9 +75,9 @@ const BRIDE_GIFT: GiftRecipient = {
   tab: "Cô dâu",
   role: "CÔ DÂU",
   name: site.bride.shortName,
-  bank: "Đang cập nhật",
-  account: "XXXXXXXXXXXX",
-  qr: null,
+  bank: "Vietcombank",
+  account: "0171003469287",
+  qr: "https://img.vietqr.io/image/VCB-0171003469287-qr_only.png",
 };
 
 /** Chú rể đứng trước — dùng cho Lễ Tân Hôn (nhà trai). */
@@ -104,8 +104,6 @@ export const brideFirst = {
  * `brideFirst`).
  */
 export const shared = {
-  audioSrc: "/audio/le-tan-hon.mp3",
-
   images: {
     hero: "/images/gallery/CN0113.jpg",
     couple: "/images/gallery/CN0123.jpg",

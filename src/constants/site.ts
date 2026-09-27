@@ -57,9 +57,9 @@ export const site = {
    * a placeholder instead of calling img.vietqr.io with invalid params.
    */
   bankAccount: {
-    bankId: "TODO",
-    accountNumber: "TODO",
-    accountName: "TODO",
+    bankId: "970436",
+    accountNumber: "9355645006",
+    accountName: "TRAN NGUYEN CHIEN",
   },
 
   brideFamily: {

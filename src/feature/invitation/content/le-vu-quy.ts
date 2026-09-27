@@ -7,6 +7,8 @@ export const vuQuy: InvitationContent = {
   ...shared,
   ...brideFirst,
   eventName: "LỄ VU QUY",
+  rsvpEvent: "le-vu-quy",
+  audioSrc: "/audio/le-vu-quy.mp3",
   dateIso: "2026-10-26",
   dateDots: "26 · 10 · 2026",
   dateShort: "26.10.2026",
