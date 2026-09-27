@@ -42,6 +42,8 @@ export interface InvitationContent {
     note?: string;
   }[];
   venue: { name: string; address: string; mapUrl: string };
+  /** Thiệp của buổi lễ còn lại — hiện thành thẻ liên kết ở chân trang. */
+  sibling: { href: string; eventName: string; dateShort: string; place: string };
   /** Hero chỉ hiện ảnh — ẩn tên, ngày và lớp phủ gradient. */
   heroImageOnly?: boolean;
   images: {

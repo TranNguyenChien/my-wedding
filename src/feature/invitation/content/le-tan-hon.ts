@@ -34,5 +34,12 @@ export const tanHon: InvitationContent = {
     mapUrl: "https://maps.app.goo.gl/d3FzydaBvUd5zVhz8",
   },
 
+  sibling: {
+    href: "/le-vu-quy",
+    eventName: "Lễ Vu Quy",
+    dateShort: "26.10.2026",
+    place: "Quảng Trị",
+  },
+
   story: storyUntil("29.10.2026"),
 };

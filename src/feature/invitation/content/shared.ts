@@ -123,7 +123,7 @@ export const shared = {
 
 export const storyUntil = (weddingDate: string): InvitationContent["story"] => [
   {
-    date: "01.01.2024",
+    date: "01.01.2025",
     title: "Lần đầu gặp gỡ",
     text: "Một cuộc gặp gỡ tình cờ, nhưng lại là khởi đầu cho tất cả.",
     step: 0.04,

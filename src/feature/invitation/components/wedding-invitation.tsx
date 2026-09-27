@@ -7,6 +7,7 @@ import {
 } from "@/components/motion/gsap-setup";
 import type { InvitationContent } from "../types";
 import { InvitationProvider } from "../invitation-context";
+import { useAutoScroll } from "../hooks/use-auto-scroll";
 import { useWeddingAudio } from "../hooks/use-wedding-audio";
 import AlbumSection from "./album-section";
 import CountdownSection from "./countdown-section";
@@ -37,6 +38,8 @@ const WeddingInvitation: React.FC<WeddingInvitationProps> = ({ content }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [gateMounted, setGateMounted] = useState(true);
   const audio = useWeddingAudio(content.audioSrc);
+  // Bắt đầu khi màn thư đã gỡ hẳn và trang đã mở khoá cuộn.
+  useAutoScroll(isOpen && !gateMounted);
 
   useEffect(() => {
     if (!gateMounted) return;
@@ -50,14 +53,12 @@ const WeddingInvitation: React.FC<WeddingInvitationProps> = ({ content }) => {
   const handleOpenStart = () => {
     void audio.play();
     window.scrollTo({ top: 0, behavior: "instant" });
-    // Reveal nào đã lọt khung nhìn thì đã chạy xong sau màn thư — chạy lại cho khách thấy.
     replayActiveReveals();
     setIsOpen(true);
   };
 
   const handleOpened = () => {
     setGateMounted(false);
-    // Thanh cuộn xuất hiện lại làm đổi bề rộng — đo lại vị trí trigger.
     requestAnimationFrame(() => ScrollTrigger.refresh());
   };
 

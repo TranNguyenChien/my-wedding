@@ -32,5 +32,12 @@ export const vuQuy: InvitationContent = {
     mapUrl: "https://maps.app.goo.gl/uAqTzF8tpDsHjv2i7",
   },
 
+  sibling: {
+    href: "/le-tan-hon",
+    eventName: "Lễ Tân Hôn",
+    dateShort: "29.10.2026",
+    place: "Lâm Đồng",
+  },
+
   story: storyUntil("26.10.2026"),
 };
