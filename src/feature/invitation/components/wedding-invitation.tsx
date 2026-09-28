@@ -17,6 +17,7 @@ import HeroSection from "./hero-section";
 import LetterGate from "./letter-gate";
 import LoveStorySection from "./love-story-section";
 import MusicControl from "./music-control";
+import PhotoboothSection from "./photobooth-section";
 import RsvpSection from "./rsvp-section";
 import ScrollToTop from "./scroll-to-top";
 import SunsetStrip from "./sunset-strip";
@@ -87,6 +88,7 @@ const WeddingInvitation: React.FC<WeddingInvitationProps> = ({ content }) => {
           <HeroSection isOpen={isOpen} />
           <WelcomeSection />
           <LoveStorySection />
+          <PhotoboothSection />
           <SunsetStrip />
           <WeddingInfoSection />
           <AlbumSection />

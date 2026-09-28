@@ -8,10 +8,12 @@ import {
   gsap,
   prefersReducedMotion,
   REPLAY_TOGGLE_ACTIONS,
+  SplitText,
 } from "@/components/motion/gsap-setup";
 import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
 import { useInvitation } from "../invitation-context";
+import ProfileSpread from "./profile-spread";
 import HeartRule from "./ui/heart-rule";
 import SectionHeading from "./ui/section-heading";
 
@@ -21,6 +23,7 @@ const ARCH_RADIUS = "rounded-[999px_999px_20px_20px/260px_260px_20px_20px]";
 const WelcomeSection: React.FC = () => {
   const content = useInvitation();
   const portraitRef = useRef<HTMLDivElement>(null);
+  const closingRef = useRef<HTMLDivElement>(null);
 
   // Khung vòm mở từ dưới lên, ảnh bên trong thu nhỏ dần về 1, dấu sáp đóng sau cùng.
   useGSAP(
@@ -49,6 +52,74 @@ const WelcomeSection: React.FC = () => {
         );
     },
     { scope: portraitRef },
+  );
+
+  // Lời kết như đang được viết tay: hai nét gạch kéo ra, monogram hiện theo
+  // nét bút từ trái sang, rồi câu trích dẫn hiện lần lượt từng chữ cái.
+  useGSAP(
+    () => {
+      ensureGsapReady();
+      if (prefersReducedMotion()) return;
+
+      const split = SplitText.create("[data-quote]", {
+        type: "words,chars",
+        charsClass: "inline-block",
+      });
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: closingRef.current,
+            start: "top 80%",
+            toggleActions: REPLAY_TOGGLE_ACTIONS,
+          },
+        })
+        .from("[data-rule='left']", {
+          scaleX: 0,
+          transformOrigin: "right center",
+          duration: 0.9,
+          ease: "power3.out",
+        })
+        .from(
+          "[data-rule='right']",
+          {
+            scaleX: 0,
+            transformOrigin: "left center",
+            duration: 0.9,
+            ease: "power3.out",
+          },
+          0,
+        )
+        .fromTo(
+          "[data-glyph]",
+          { clipPath: "inset(-20% 100% -20% 0%)" },
+          {
+            clipPath: "inset(-20% 0% -20% 0%)",
+            duration: 0.55,
+            stagger: 0.35,
+            ease: "power1.inOut",
+          },
+          0.2,
+        )
+        .from(
+          split.chars,
+          {
+            opacity: 0,
+            y: 6,
+            filter: "blur(3px)",
+            duration: 0.35,
+            stagger: 0.022,
+            ease: "power1.out",
+          },
+          1.1,
+        )
+        .from(
+          "[data-heart]",
+          { opacity: 0, scale: 0.6, duration: 0.6, ease: "back.out(2)" },
+          "-=0.1",
+        );
+    },
+    { scope: closingRef },
   );
 
   return (
@@ -97,54 +168,55 @@ const WelcomeSection: React.FC = () => {
         </figure>
       </div>
 
-      <Reveal className="mt-10">
+      <div className="mt-20 space-y-10">
+        {content.profiles.map((profile, index) => (
+          <div key={profile.role}>
+            <ProfileSpread
+              profile={profile}
+              flip={index % 2 === 1}
+              dropPhoto={index === 0}
+            />
+          </div>
+        ))}
+      </div>
+      <div ref={closingRef} className="mt-10">
         <p
           aria-hidden="true"
-          className="mb-7 text-center font-display text-[24px] leading-none tracking-[7px] text-bronze"
+          className="mb-7 flex items-center gap-4 text-center font-script text-4xl leading-none tracking-[7px] text-bronze"
         >
-          {content.monogram.first}&nbsp;&nbsp;·&nbsp;&nbsp;
-          {content.monogram.second}
+          <i
+            data-rule="left"
+            aria-hidden="true"
+            className="h-px w-full flex-1 bg-[#b78c71]/25"
+          ></i>
+          <span data-glyph className="inline-block pb-1">
+            {content.monogram.first}
+          </span>
+          <span data-glyph className="inline-block pb-1">
+            ·
+          </span>
+          <span data-glyph className="inline-block pb-1">
+            {content.monogram.second}
+          </span>
+          <i
+            data-rule="right"
+            aria-hidden="true"
+            className="h-px w-full flex-1 bg-[#b78c71]/25"
+          ></i>
         </p>
-        <blockquote className="text-center font-display text-[24px] leading-[1.4] text-wine italic">
-          “Có anh, mọi hành trình
+        <blockquote
+          data-quote
+          className="text-center font-display text-xl leading-[1.4] text-wine italic"
+        >
+          “Có lẽ chúng mình đã không biết rằng một ngày rất bình thường sẽ mở
+          đầu cho một câu chuyện thật đặc biệt.
           <br />
-          đều trở nên dịu dàng.”
+          Từ hai người xa lạ, thành hai người thương; và hôm nay - thành một gia
+          đình”
         </blockquote>
-        <HeartRule className="mt-5 mb-7" />
-      </Reveal>
-
-      <div className="mt-16 space-y-12">
-        {content.profiles.map((profile, index) => {
-          const end = index % 2 === 1;
-          return (
-            <Reveal key={profile.role}>
-              <article className={cn(end && "text-right")}>
-                <p className="font-text text-[11px] font-medium tracking-[0.28em] text-bronze uppercase">
-                  {profile.role}
-                </p>
-                <h3 className="mt-2 font-display text-[44px] leading-none font-light tracking-[-0.02em] text-wine">
-                  {profile.name}
-                </h3>
-                <p
-                  className={cn(
-                    "mt-3 max-w-[30ch] font-text text-[14px] leading-[1.75] text-taupe",
-                    end && "ml-auto",
-                  )}
-                >
-                  {profile.bio}
-                </p>
-              </article>
-              {index < content.profiles.length - 1 && (
-                <p
-                  aria-hidden="true"
-                  className="mt-8 text-center font-display text-[64px] leading-none text-bronze/70 italic"
-                >
-                  &amp;
-                </p>
-              )}
-            </Reveal>
-          );
-        })}
+        <div data-heart>
+          <HeartRule className="mt-5 mb-7" />
+        </div>
       </div>
     </section>
   );

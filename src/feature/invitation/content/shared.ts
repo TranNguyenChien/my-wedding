@@ -44,16 +44,24 @@ const ALBUM_CAPTIONS: (string | undefined)[] = [
   "Một đời thương nhớ",
 ];
 
+/** Dải ảnh photobooth: mỗi mảng con là một dải, ảnh trong `public/images/gallery/`. */
+const PHOTOBOOTH_STRIPS = [
+  ["TH_01888.jpg", "TH_02125.jpg", "TH_02177.jpg", "TH_02167.jpg"],
+  ["CN0333.jpg", "CN0353.jpg", "TH_01948.jpg", "TH_02324.jpg"],
+];
+
 const GROOM_PROFILE = {
   role: "CHÚ RỂ",
   name: site.groom.shortName,
-  bio: "Là người luôn ở bên, chọn yêu thương mỗi ngày và cùng em đi hết những hành trình phía trước.",
+  bio: "Chàng trai với trái tim ấm áp, luôn tỉ mỉ vun vén tình yêu bằng những điều giản dị và chân thành nhất.",
+  photo: "/images/gallery/TH_02309.jpg",
 };
 
 const BRIDE_PROFILE = {
   role: "CÔ DÂU",
   name: site.bride.shortName,
-  bio: "Là cô gái tin vào những điều dịu dàng, và may mắn vì luôn có anh đồng hành trong từng khoảnh khắc.",
+  bio: "Cô gái mang nụ cười dịu dàng, tin rằng sự an yên lớn nhất là khi được là chính mình bên anh.",
+  photo: "/images/gallery/TH_02452.jpg",
 };
 
 /**
@@ -119,23 +127,30 @@ export const shared = {
     alt: `Ảnh cưới của Chiến và Ngọc (${i + 1})`,
     caption: ALBUM_CAPTIONS[i],
   })),
+
+  photobooth: PHOTOBOOTH_STRIPS.map((strip, s) =>
+    strip.map((file, i) => ({
+      src: `/images/gallery/${file}`,
+      alt: `Ảnh photobooth của Chiến và Ngọc (dải ${s + 1}, khung ${i + 1})`,
+    })),
+  ),
 } satisfies Partial<InvitationContent>;
 
 export const storyUntil = (weddingDate: string): InvitationContent["story"] => [
   {
-    date: "01.01.2025",
+    date: "2022",
     title: "Lần đầu gặp gỡ",
-    text: "Một cuộc gặp gỡ tình cờ, nhưng lại là khởi đầu cho tất cả.",
+    text: "Một cuộc gặp gỡ bình thường, nhưng lại là khởi đầu cho tất cả.",
     step: 0.04,
   },
   {
-    date: "17.05.2025",
+    date: "2025",
     title: "Cùng nhau trưởng thành",
     text: "Đi qua nhiều hành trình, ở lại vì cùng nhìn về một hướng.",
     step: 0.3,
   },
   {
-    date: "24.08.2026",
+    date: "2026",
     title: "Anh ngỏ lời, em nói đồng ý",
     text: "Một lời hẹn ước được viết nên từ những điều bình dị.",
     step: 0.58,

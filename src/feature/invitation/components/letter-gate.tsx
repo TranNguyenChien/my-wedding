@@ -410,7 +410,7 @@ const LetterGate: React.FC<LetterGateProps> = ({ onOpenStart, onOpened }) => {
             </span>
             <span
               data-gate-shimmer
-              className="bg-[linear-gradient(90deg,#f3dfc2_0%,#f3dfc2_40%,#ffffff_50%,#f3dfc2_60%,#f3dfc2_100%)] bg-size-[200%_100%] bg-clip-text font-text text-[10px] leading-none font-medium tracking-[0.24em] whitespace-nowrap text-transparent uppercase drop-shadow-[0_1px_6px_#1a040acc] @max-[430px]:text-[9px] @max-[430px]:tracking-[0.2em]"
+              className="bg-[linear-gradient(90deg,#f3dfc2_0%,#f3dfc2_40%,#ffffff_50%,#f3dfc2_60%,#f3dfc2_100%)] bg-size-[200%_100%] bg-clip-text font-text text-[10px] leading-normal font-medium tracking-[0.24em] whitespace-nowrap text-transparent uppercase drop-shadow-[0_1px_6px_#1a040acc] @max-[430px]:text-[9px] @max-[430px]:tracking-[0.2em] pt-3"
             >
               Chạm để mở thư
             </span>

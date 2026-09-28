@@ -56,9 +56,17 @@ export interface InvitationContent {
     /** Hình dạng nét vẽ Love Story (600×1340, dùng làm alpha mask). */
     storyLine: string;
   };
-  profiles: readonly { role: string; name: string; bio: string }[];
+  profiles: readonly {
+    role: string;
+    name: string;
+    bio: string;
+    /** Ảnh chân dung riêng, hiện cạnh phần giới thiệu ở mục "Thân gửi". */
+    photo: string;
+  }[];
   /** `step` = tiến độ cuộn (0–1) của nét vẽ mà tại đó mốc sáng lên. */
   story: readonly { date: string; title: string; text: string; step: number }[];
   album: readonly { src: string; alt: string; caption?: string }[];
+  /** Các dải ảnh photobooth ngay dưới Love Story; mỗi dải là một cột khung ảnh. */
+  photobooth: readonly (readonly { src: string; alt: string }[])[];
   giftRecipients: readonly GiftRecipient[];
 }
