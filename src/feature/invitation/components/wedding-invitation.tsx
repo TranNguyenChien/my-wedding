@@ -98,7 +98,7 @@ const WeddingInvitation: React.FC<WeddingInvitationProps> = ({ content }) => {
           <EndingSection />
         </main>
 
-        <InvitationFooter />
+        {/* <InvitationFooter /> */}
       </div>
     </InvitationProvider>
   );

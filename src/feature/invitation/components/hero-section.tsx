@@ -105,7 +105,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ isOpen }) => {
             </p>
             <h1
               id="hero-title"
-              className="mt-4 font-display text-[48px] leading-[0.95] font-light tracking-[-0.03em]"
+              className="mt-4 font-display text-[40px] sm:text-[48px] leading-[0.95] font-light tracking-[-0.03em]"
             >
               <span data-hero-line className="block">
                 {content.firstName}

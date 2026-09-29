@@ -44,12 +44,7 @@ const WelcomeSection: React.FC = () => {
           duration: 1.3,
           ease: "power3.out",
         })
-        .from("img", { scale: 1.18, duration: 1.8, ease: "power2.out" }, 0)
-        .from(
-          "[data-seal]",
-          { scale: 0, rotate: -40, duration: 0.8, ease: "back.out(1.8)" },
-          0.9,
-        );
+        .from("img", { scale: 1.18, duration: 1.8, ease: "power2.out" }, 0);
     },
     { scope: portraitRef },
   );
@@ -108,7 +103,7 @@ const WelcomeSection: React.FC = () => {
             y: 6,
             filter: "blur(3px)",
             duration: 0.35,
-            stagger: 0.022,
+            stagger: 0.055,
             ease: "power1.out",
           },
           1.1,

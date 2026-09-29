@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { prefersReducedMotion } from "@/components/motion/gsap-setup";
 
 /** Tốc độ cuộn tự động (px/giây). */
-const SPEED = 120;
+const SPEED = 80;
 /** Chờ intro của hero chạy một nhịp rồi mới bắt đầu cuộn. */
-const START_DELAY_MS = 1500;
+const START_DELAY_MS = 200;
 /** Thời gian tăng tốc từ 0 lên `SPEED`, để lúc bắt đầu không bị giật. */
 const RAMP_MS = 1200;
 

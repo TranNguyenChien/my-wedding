@@ -116,7 +116,7 @@ const GiftSection: React.FC = () => {
       ref={rootRef}
       id="mung-cuoi"
       aria-labelledby="gift-title"
-      className="relative overflow-hidden border-t border-[#8f5446]/10 bg-sand px-[8%] pt-19.5 pb-22"
+      className="relative overflow-hidden bg-sand px-[8%] pt-19.5 pb-22"
     >
       <Reveal className="relative mx-auto w-full max-w-152.5 text-center">
         <span

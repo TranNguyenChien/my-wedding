@@ -73,7 +73,7 @@ const EndingSection: React.FC = () => {
         aria-hidden="true"
         className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0,#fff5e866_28%,#fff5e8e0_52%,#fff5e8f5_100%)]"
       />
-      <Wave edge="top" fillClassName="fill-sand" className="z-[3] h-[85px]" />
+      <Wave edge="top" fillClassName="fill-sand" className="z-3 h-21.25" />
 
       <div
         data-ending-copy

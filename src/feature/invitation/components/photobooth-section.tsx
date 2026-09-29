@@ -117,7 +117,7 @@ const PhotoboothSection: React.FC = () => {
           {
             yPercent: 0,
             rotate: 0,
-            duration: 3.2,
+            duration: 4.2,
             stagger: 0.6,
             ease: "sine.inOut",
           },
@@ -189,11 +189,6 @@ const PhotoboothSection: React.FC = () => {
                 />
               </span>
             </div>
-
-            <p className="mt-2 font-script text-[22px] leading-none text-champagne/80">
-              Smile, {content.monogram.first} &amp; {content.monogram.second}
-            </p>
-
             <span
               aria-hidden="true"
               className="mt-3.5 block h-3 rounded-full bg-[#1a0104] shadow-[inset_0_3px_5px_#000000cc,0_1px_0_#ffffff1a]"
@@ -234,11 +229,8 @@ const PhotoboothSection: React.FC = () => {
                   ))}
                 </ul>
                 <figcaption className={cn("pt-3 pb-1 text-center", style.ink)}>
-                  <span className="block font-script text-[24px] leading-none">
-                    {content.monogram.first} &amp; {content.monogram.second}
-                  </span>
-                  <span className="mt-1.5 block font-text text-[8px] font-medium tracking-[0.3em] opacity-70">
-                    {content.dateDots}
+                  <span className="mt-1.5 block font-script text-sm font-medium tracking-[0.3em] opacity-70">
+                    our memories
                   </span>
                 </figcaption>
               </figure>
