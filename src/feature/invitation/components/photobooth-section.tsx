@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import {
   ensureGsapReady,
   gsap,
   prefersReducedMotion,
+  ScrollTrigger,
 } from "@/components/motion/gsap-setup";
 import { cn } from "@/lib/utils";
 import { useInvitation } from "../invitation-context";
@@ -18,17 +19,60 @@ const STRIP_STYLE = [
   {
     paper: "bg-[#f3e4d3]",
     ink: "text-wine-dark",
-    photo: "grayscale-[.85] contrast-[1.05]",
+    photo: "contrast-[1.05]",
   },
 ];
 
+const STRIP_COUNT = 2;
+const FRAMES_PER_STRIP = 5;
+
+type Photo = { src: string; alt: string };
+
+/** Chia `photos` thành các dải liên tiếp, mỗi dải `FRAMES_PER_STRIP` ảnh. */
+const toStrips = (photos: readonly Photo[]) =>
+  Array.from({ length: STRIP_COUNT }, (_, s) =>
+    photos.slice(s * FRAMES_PER_STRIP, (s + 1) * FRAMES_PER_STRIP),
+  );
+
+/** Fisher–Yates: trả về bản sao đã xáo trộn, không đổi mảng gốc. */
+const shuffle = <T,>(items: readonly T[]) => {
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+};
+
+/** Mỗi kho ảnh chỉ xáo một lần mỗi lần tải trang, để snapshot ổn định giữa các lần render. */
+const shuffled = new WeakMap<readonly Photo[], readonly Photo[]>();
+const shuffledOnce = (pool: readonly Photo[]) => {
+  let out = shuffled.get(pool);
+  if (!out) {
+    out = shuffle(pool);
+    shuffled.set(pool, out);
+  }
+  return out;
+};
+
+const noopSubscribe = () => () => {};
+
 /**
- * Photobooth: lần đầu section vào khung nhìn, đèn flash chớp rồi từng dải ảnh
+ * Photobooth: mỗi lần section vào khung nhìn, đèn flash chớp rồi từng dải ảnh
  * chạy thẳng xuống từ dưới thân máy (không nghiêng).
  */
 const PhotoboothSection: React.FC = () => {
   const content = useInvitation();
   const stageRef = useRef<HTMLDivElement>(null);
+
+  // Server và lúc hydrate dùng thứ tự gốc để khớp HTML; sau đó client đổi sang
+  // bộ đã xáo, nên mỗi lần tải trang là một bộ ảnh khác.
+  const photos = useSyncExternalStore(
+    noopSubscribe,
+    () => shuffledOnce(content.photobooth),
+    () => content.photobooth,
+  );
+  const strips = toStrips(photos);
 
   useGSAP(
     () => {
@@ -37,15 +81,8 @@ const PhotoboothSection: React.FC = () => {
 
       const strips = gsap.utils.toArray<HTMLElement>("[data-strip]");
 
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: stageRef.current,
-            start: "top 70%",
-            // Chạy đúng một lần: cuộn ra khỏi khung nhìn không reset/giật lại.
-            once: true,
-          },
-        })
+      const tl = gsap
+        .timeline({ paused: true })
         .from("[data-machine]", {
           y: 24,
           opacity: 0,
@@ -86,6 +123,26 @@ const PhotoboothSection: React.FC = () => {
           },
           "+=0.1",
         );
+
+      // Chạy lại mỗi lần cuộn tới (cả xuống lẫn ngược lên), nhưng chỉ reset
+      // khi section đã ra hẳn khỏi khung nhìn — không giật lúc còn thấy.
+      const playIfReset = () => {
+        if (tl.progress() === 0) tl.play();
+      };
+      ScrollTrigger.create({
+        trigger: stageRef.current,
+        start: "top 70%",
+        end: "bottom 30%",
+        onEnter: playIfReset,
+        onEnterBack: playIfReset,
+      });
+      ScrollTrigger.create({
+        trigger: stageRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        onLeave: () => tl.pause(0),
+        onLeaveBack: () => tl.pause(0),
+      });
     },
     { scope: stageRef },
   );
@@ -99,7 +156,11 @@ const PhotoboothSection: React.FC = () => {
         script="Photobooth"
         title="NHỮNG KHOẢNH KHẮC"
         titleId="photobooth-title"
-      />
+      >
+        Cùng nhìn lại những khoảnh khắc ngọt ngào
+        <br />
+        trên hành trình yêu thương của chúng mình.
+      </SectionHeading>
 
       <div ref={stageRef} className="mt-10">
         {/* Thân máy: bảng tên, đèn báo, ống kính (kèm lớp flash) và khe in. */}
@@ -142,7 +203,7 @@ const PhotoboothSection: React.FC = () => {
 
         {/* Cắt mép trên ngay dưới thân máy để dải ảnh không tràn lên phần phía trên khi chạy xuống. */}
         <div className="relative -mt-5 flex justify-center gap-5 overflow-hidden px-4 pt-0 pb-10">
-          {content.photobooth.map((strip, s) => {
+          {strips.map((strip, s) => {
             const style = STRIP_STYLE[s % STRIP_STYLE.length];
             return (
               <figure

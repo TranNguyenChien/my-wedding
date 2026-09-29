@@ -44,11 +44,8 @@ const ALBUM_CAPTIONS: (string | undefined)[] = [
   "Một đời thương nhớ",
 ];
 
-/** Dải ảnh photobooth: mỗi mảng con là một dải, ảnh trong `public/images/gallery/`. */
-const PHOTOBOOTH_STRIPS = [
-  ["TH_01888.jpg", "TH_02125.jpg", "TH_02177.jpg", "TH_02167.jpg"],
-  ["CN0333.jpg", "CN0353.jpg", "TH_01948.jpg", "TH_02324.jpg"],
-];
+/** Số ảnh `together-01.jpg` … `together-NN.jpg` trong `public/images/togethers/`. */
+const TOGETHER_PHOTO_COUNT = 28;
 
 const GROOM_PROFILE = {
   role: "CHÚ RỂ",
@@ -128,12 +125,13 @@ export const shared = {
     caption: ALBUM_CAPTIONS[i],
   })),
 
-  photobooth: PHOTOBOOTH_STRIPS.map((strip, s) =>
-    strip.map((file, i) => ({
-      src: `/images/gallery/${file}`,
-      alt: `Ảnh photobooth của Chiến và Ngọc (dải ${s + 1}, khung ${i + 1})`,
-    })),
-  ),
+  photobooth: Array.from({ length: TOGETHER_PHOTO_COUNT }, (_, i) => {
+    const n = String(i + 1).padStart(2, "0");
+    return {
+      src: `/images/togethers/together-${n}.jpg`,
+      alt: `Ảnh photobooth của Chiến và Ngọc (${i + 1})`,
+    };
+  }),
 } satisfies Partial<InvitationContent>;
 
 export const storyUntil = (weddingDate: string): InvitationContent["story"] => [

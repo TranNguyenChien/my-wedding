@@ -66,7 +66,7 @@ export interface InvitationContent {
   /** `step` = tiến độ cuộn (0–1) của nét vẽ mà tại đó mốc sáng lên. */
   story: readonly { date: string; title: string; text: string; step: number }[];
   album: readonly { src: string; alt: string; caption?: string }[];
-  /** Các dải ảnh photobooth ngay dưới Love Story; mỗi dải là một cột khung ảnh. */
-  photobooth: readonly (readonly { src: string; alt: string }[])[];
+  /** Kho ảnh photobooth; mỗi lần tải trang, section bốc ngẫu nhiên ảnh từ đây để xếp vào các dải. */
+  photobooth: readonly { src: string; alt: string }[];
   giftRecipients: readonly GiftRecipient[];
 }
