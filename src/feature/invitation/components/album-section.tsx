@@ -43,7 +43,11 @@ const AlbumSection: React.FC = () => {
       const tiles = gsap.utils.toArray<HTMLElement>("[data-album-tile]");
       gsap
         .timeline({
-          scrollTrigger: { trigger: gridRef.current, start: "top 80%", toggleActions: REPLAY_TOGGLE_ACTIONS },
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top 80%",
+            toggleActions: REPLAY_TOGGLE_ACTIONS,
+          },
         })
         .from(tiles, {
           clipPath: "inset(100% 0% 0% 0%)",
@@ -72,13 +76,13 @@ const AlbumSection: React.FC = () => {
     >
       <Reveal>
         <SectionHeading
-          script="Album ảnh"
-          title="NHỮNG KHOẢNH KHẮC"
+          script="Wedding album"
+          title="MỘT KHUNG HÌNH, TRỌN MỘT ĐỜI"
           titleId="album-title"
         >
-          Cùng nhìn lại những khoảnh khắc ngọt ngào
+          Em mặc váy trắng, anh đứng đợi
           <br />
-          trên hành trình yêu thương của chúng mình.
+          cả thế giới bỗng dịu dàng hẳn đi.
         </SectionHeading>
       </Reveal>
 
@@ -102,7 +106,11 @@ const AlbumSection: React.FC = () => {
               src={photo.src}
               alt={photo.alt}
               fill
-              sizes={i === 0 ? "(min-width: 512px) 490px, 95vw" : "(min-width: 512px) 280px, 55vw"}
+              sizes={
+                i === 0
+                  ? "(min-width: 512px) 490px, 95vw"
+                  : "(min-width: 512px) 280px, 55vw"
+              }
               className="object-cover object-[center_30%] saturate-[.86] transition-[scale] duration-700 ease-out group-hover:scale-[1.035]"
             />
             <span
@@ -141,7 +149,13 @@ const AlbumSection: React.FC = () => {
                     key={photo.src}
                     className="relative size-9 overflow-hidden rounded-full border-2 border-[#fffaf3]"
                   >
-                    <Image src={photo.src} alt="" fill sizes="36px" className="object-cover" />
+                    <Image
+                      src={photo.src}
+                      alt=""
+                      fill
+                      sizes="36px"
+                      className="object-cover"
+                    />
                   </span>
                 ))}
             </span>
@@ -159,11 +173,17 @@ const AlbumSection: React.FC = () => {
       )}
 
       <Reveal className="mt-5 flex items-center gap-4 text-[#8a5f57]">
-        <span aria-hidden="true" className="font-text text-[7px] font-medium tracking-[3px]">
+        <span
+          aria-hidden="true"
+          className="font-text text-[7px] font-medium tracking-[3px]"
+        >
           OUR MEMORIES
         </span>
         <i aria-hidden="true" className="h-px flex-1 bg-[#b78c71]/25" />
-        <b aria-hidden="true" className="font-script text-[27px] leading-none font-normal">
+        <b
+          aria-hidden="true"
+          className="font-script text-[27px] leading-none font-normal"
+        >
           {content.monogram.first} &amp; {content.monogram.second}
         </b>
       </Reveal>

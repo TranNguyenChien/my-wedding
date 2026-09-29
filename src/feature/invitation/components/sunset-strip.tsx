@@ -57,11 +57,12 @@ const SunsetStrip: React.FC = () => {
           className="object-cover object-[center_35%] saturate-[.72] sepia-[.08]"
         />
       </div>
+      {/* Scrim kem đậm dần về mép phải để chữ script luôn đọc được trên nền voan/ảnh. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(90deg,transparent_40%,#fff4df9e)]"
+        className="absolute inset-0 bg-[linear-gradient(90deg,transparent_42%,#fbf1e2b3_62%,#fbf1e2eb_100%)]"
       />
-      <figcaption className="absolute top-[28%] right-[6%] z-[2] -rotate-4 text-center font-script text-[24px] leading-[1.1] text-[#714b4b]">
+      <figcaption className="absolute top-1/2 right-[5%] z-[2] w-[42%] -translate-y-1/2 -rotate-4 pb-1 text-center font-script text-[22px] leading-[1.2] text-[#5a3434] [text-shadow:0_0_10px_#fbf1e2,0_0_2px_#fbf1e2] min-[400px]:text-[26px]">
         Và còn nhiều
         <br />
         điều tuyệt vời phía trước…
