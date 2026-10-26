@@ -194,11 +194,14 @@ const GiftSheet: React.FC<GiftSheetProps> = ({ onClosed }) => {
           >
             {recipient.qr ? (
               <div className="relative aspect-square w-full">
+                {/* img.vietqr.io trả về SVG dù URL đuôi .png — bộ tối ưu ảnh
+                    của Next chặn SVG, nên bỏ qua tối ưu để ảnh tải trực tiếp. */}
                 <Image
                   src={recipient.qr}
                   alt={`Mã QR mừng cưới của ${recipient.role.toLowerCase()} ${recipient.name}`}
                   fill
                   sizes="132px"
+                  unoptimized
                   className="object-contain"
                 />
               </div>
