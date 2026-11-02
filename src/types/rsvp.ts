@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 /** Trang thiệp gửi RSVP — quyết định sheet ghi vào (xem scripts/google-apps-script.js). */
-export const rsvpEvents = ["le-vu-quy", "le-tan-hon"] as const;
+export const rsvpEvents = ["le-vu-quy", "le-tan-hon", "tiec-bao-hy"] as const;
 export type RsvpEvent = (typeof rsvpEvents)[number];
 
 /** Giới hạn số khách mỗi lời xác nhận (bộ đếm trên form kẹp theo giá trị này). */

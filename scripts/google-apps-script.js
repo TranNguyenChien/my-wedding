@@ -10,7 +10,7 @@
 
 const RSVP_CFG = {
   SPREADSHEET_ID: "1Ypec7iiP9khZz91WbYXAyhRFnB2IsCQQMWoPtxeaX14", // file "Wedding RSVP"
-  SOURCES: ["Lễ Vu Quy", "Lễ Tân Hôn"], // 2 sheet API đang ghi (cột A→F)
+  SOURCES: ["Lễ Vu Quy", "Lễ Tân Hôn", "Tiệc Báo Hỷ"], // 3 sheet API đang ghi (cột A→F)
   LIST: "Danh sách khách",
   STATS: "Thống kê",
   // Tiêu đề hiển thị cho cột A→F của sheet gốc. Sửa lại nếu khác thứ tự trong doPost.

@@ -41,11 +41,20 @@ export interface InvitationContent {
     value: string;
     note?: string;
   }[];
-  venue: { name: string; address: string; mapUrl: string };
+  venue: { name: string; address: string; mapUrl: string; website?: string };
   /** Thiệp của buổi lễ còn lại — hiện thành thẻ liên kết ở chân trang. */
   sibling: { href: string; eventName: string; dateShort: string; place: string };
   /** Hero chỉ hiện ảnh — ẩn tên, ngày và lớp phủ gradient. */
   heroImageOnly?: boolean;
+  /**
+   * Chỉ Tiệc Báo Hỷ: có trường này thì trang hiện section tiệc tối thay cho
+   * mục "Ngày cưới". `endsAt` là giờ kết thúc dự kiến khi lưu vào lịch.
+   */
+  party?: { endsAt: string; photo: string };
+  /** Tiêu đề khối đếm ngược, mặc định "ĐẾN NGÀY CƯỚI". */
+  countdownTitle?: string;
+  /** Tên dịp trong lời chào ở mục "Thân gửi", mặc định "lễ cưới". */
+  welcomeOccasion?: string;
   images: {
     hero: string;
     couple: string;

@@ -2,6 +2,15 @@ function toIcsTimestamp(date: Date): string {
   return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
+/** RFC 5545: giá trị TEXT phải escape `\`, `;`, `,` và xuống dòng. */
+function escapeIcsText(value: string): string {
+  return value
+    .replace(/\\/g, "\\\\")
+    .replace(/;/g, "\\;")
+    .replace(/,/g, "\\,")
+    .replace(/\r?\n/g, "\\n");
+}
+
 export function buildIcsDataUrl(params: {
   title: string;
   description: string;
@@ -19,9 +28,9 @@ export function buildIcsDataUrl(params: {
     `DTSTAMP:${toIcsTimestamp(new Date())}`,
     `DTSTART:${toIcsTimestamp(start)}`,
     `DTEND:${toIcsTimestamp(end)}`,
-    `SUMMARY:${title}`,
-    `DESCRIPTION:${description}`,
-    `LOCATION:${location}`,
+    `SUMMARY:${escapeIcsText(title)}`,
+    `DESCRIPTION:${escapeIcsText(description)}`,
+    `LOCATION:${escapeIcsText(location)}`,
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");

@@ -133,7 +133,8 @@ const WelcomeSection: React.FC = () => {
             </>
           }
         >
-          Chào mừng bạn đến với lễ cưới của chúng mình! Chúng mình rất hạnh phúc
+          Chào mừng bạn đến với {content.welcomeOccasion ?? "lễ cưới"} của
+          chúng mình! Chúng mình rất hạnh phúc
           khi được chia sẻ ngày đặc biệt này cùng gia đình và bạn bè thân yêu.
         </SectionHeading>
       </Reveal>

@@ -61,7 +61,7 @@ const CountdownSection: React.FC = () => {
           id="countdown-title"
           className="mt-2 font-display text-[27px] leading-none tracking-[1px]"
         >
-          ĐẾN NGÀY CƯỚI
+          {content.countdownTitle ?? "ĐẾN NGÀY CƯỚI"}
         </h2>
         <HeartRule tone="light" />
       </div>

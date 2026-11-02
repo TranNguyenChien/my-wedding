@@ -22,12 +22,13 @@ import RsvpSection from "./rsvp-section";
 import ScrollToTop from "./scroll-to-top";
 import SunsetStrip from "./sunset-strip";
 import InvitationFooter from "./invitation-footer";
+import PartySection from "./party-section";
 import WeddingInfoSection from "./wedding-info-section";
 import WelcomeSection from "./welcome-section";
 
 /**
- * Gốc client của trang thiệp (Lễ Tân Hôn / Lễ Vu Quy): giữ trạng thái màn
- * thư + nhạc nền. Hai trang chỉ khác `content`.
+ * Gốc client của trang thiệp (Lễ Tân Hôn / Lễ Vu Quy / Tiệc Báo Hỷ): giữ
+ * trạng thái màn thư + nhạc nền. Các trang chỉ khác `content`.
  * Nội dung luôn render bên dưới màn thư (để ScrollTrigger đo layout đúng)
  * nhưng `inert` + khoá cuộn cho tới khi thư được mở.
  */
@@ -90,7 +91,7 @@ const WeddingInvitation: React.FC<WeddingInvitationProps> = ({ content }) => {
           <LoveStorySection />
           <PhotoboothSection />
           <SunsetStrip />
-          <WeddingInfoSection />
+          {content.party ? <PartySection /> : <WeddingInfoSection />}
           <AlbumSection />
           <CountdownSection />
           <RsvpSection />
