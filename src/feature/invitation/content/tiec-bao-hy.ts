@@ -26,9 +26,10 @@ export const baoHy: InvitationContent = {
     },
   ],
 
-  /** TODO: thêm tên sảnh khi nhà hàng xác nhận; thay `mapUrl` bằng link share nếu có. */
+  /** TODO: thay `mapUrl` bằng link share nếu có. */
   venue: {
     name: "Trung tâm Hội nghị Tiệc cưới Gold Palace",
+    hall: { name: "Diamond", floor: "G" },
     address: "329 Nơ Trang Long, Phường Bình Lợi Trung, TP. Hồ Chí Minh",
     mapUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
       "Gold Palace, 329 Nơ Trang Long, TP. Hồ Chí Minh",

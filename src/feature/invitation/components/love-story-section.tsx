@@ -9,7 +9,7 @@ import {
 } from "@/components/motion/gsap-setup";
 import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
-import { STORY_LINE_PATH } from "../constants";
+import { STORY_LINE_LENGTH, STORY_LINE_PATH } from "../constants";
 import { useInvitation } from "../invitation-context";
 import HeartRule from "./ui/heart-rule";
 
@@ -39,15 +39,22 @@ const LoveStorySection: React.FC = () => {
       const pen = penRef.current;
       if (!pen || prefersReducedMotion()) return;
 
-      const length = pen.getTotalLength();
       const milestones = gsap.utils.toArray<HTMLElement>("[data-milestone]");
       const lit = milestones.map(() => false);
 
-      gsap.set(pen, { strokeDasharray: length, strokeDashoffset: length });
+      // Dash đặt bằng thuộc tính SVG (số không đơn vị, theo viewBox) thay vì
+      // CSS style "…px": cách chắc chắn nhất để mọi trình duyệt, kể cả
+      // Safari, ẩn nét lúc đầu rồi vẽ dần.
+      gsap.set(pen, {
+        attr: {
+          "stroke-dasharray": STORY_LINE_LENGTH,
+          "stroke-dashoffset": STORY_LINE_LENGTH,
+        },
+      });
       gsap.set(milestones, DIM);
 
       gsap.to(pen, {
-        strokeDashoffset: 0,
+        attr: { "stroke-dashoffset": 0 },
         ease: "none",
         scrollTrigger: {
           trigger: stageRef.current,
@@ -96,10 +103,17 @@ const LoveStorySection: React.FC = () => {
         ref={stageRef}
         className="relative z-[3] mx-auto mt-8 h-[610px] w-full max-w-[470px]"
       >
+        {/*
+         * Nét bút tô màu trực tiếp, cắt theo hình ảnh `storyLine` bằng một
+         * SVG mask alpha. Không thêm mask luminance cho nét vẽ hay
+         * drop-shadow (Safari vẽ lại chúng trên CPU mỗi khung hình scrub →
+         * giật), và không dùng CSS mask-image trên <svg> (Safari không vẽ
+         * lại nét theo stroke-dashoffset → nét hiện sẵn toàn bộ).
+         */}
         <svg
           viewBox="0 0 600 1340"
           aria-hidden="true"
-          className="absolute top-0 left-1/2 h-[610px] w-[258px] -translate-x-1/2 overflow-visible opacity-90 drop-shadow-[0_0_5px_#f1d6a32b]"
+          className="absolute top-0 left-1/2 h-[610px] w-[258px] -translate-x-1/2 overflow-visible opacity-90"
         >
           <defs>
             <mask
@@ -119,31 +133,16 @@ const LoveStorySection: React.FC = () => {
                 height="1340"
               />
             </mask>
-            <mask
-              id="love-story-reveal"
-              maskUnits="userSpaceOnUse"
-              x="-20"
-              y="-20"
-              width="640"
-              height="1380"
-            >
-              <path
-                ref={penRef}
-                d={STORY_LINE_PATH}
-                fill="none"
-                stroke="#fff"
-                strokeWidth="14"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </mask>
           </defs>
           <g mask="url(#love-story-shape)">
-            <rect
-              width="600"
-              height="1340"
-              fill="#f5d8a7"
-              mask="url(#love-story-reveal)"
+            <path
+              ref={penRef}
+              d={STORY_LINE_PATH}
+              fill="none"
+              stroke="#f5d8a7"
+              strokeWidth="14"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </g>
         </svg>

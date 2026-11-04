@@ -85,14 +85,18 @@ const WelcomeSection: React.FC = () => {
           },
           0,
         )
+        // Nét bay của chữ script tràn ra ngoài khung chữ, nên mép clip nới
+        // rộng -50% mỗi bên và bỏ hẳn khi chạy xong — clip sát 0% sẽ cắt cụt
+        // đuôi chữ (rõ nhất trên Safari).
         .fromTo(
           "[data-glyph]",
-          { clipPath: "inset(-20% 100% -20% 0%)" },
+          { clipPath: "inset(-50% 150% -50% -50%)" },
           {
-            clipPath: "inset(-20% 0% -20% 0%)",
+            clipPath: "inset(-50% -50% -50% -50%)",
             duration: 0.55,
             stagger: 0.35,
             ease: "power1.inOut",
+            clearProps: "clipPath",
           },
           0.2,
         )

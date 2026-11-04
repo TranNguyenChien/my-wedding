@@ -135,7 +135,7 @@ const RsvpSection: React.FC = () => {
       </Reveal>
 
       <Reveal delay={0.1} className="relative z-3 mt-10">
-        <div className="rounded-[28px] border border-white/70 bg-white/55 p-5 shadow-[0_24px_60px_-28px_rgba(120,19,29,0.28),inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-md sm:p-7">
+        <div className="rounded-[28px] border border-white/70 bg-white/55 p-5 shadow-[0_24px_60px_-28px_rgba(120,19,29,0.28),inset_0_1px_0_rgba(255,255,255,0.8)] sm:p-7">
           {status === "success" ? (
             <div
               ref={feedbackRef}

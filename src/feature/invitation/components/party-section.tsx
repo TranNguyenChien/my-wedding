@@ -1,17 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
-import {
-  ArrowUpRight,
-  CalendarPlus,
-  Check,
-  Copy,
-  DownloadSimple,
-  Globe,
-  GoogleLogo,
-  MapPin,
-} from "@phosphor-icons/react/ssr";
+import { ArrowUpRight, MapPin } from "@phosphor-icons/react/ssr";
 import { useGSAP } from "@gsap/react";
 import { addDays, getDate, isSameDay, parseISO, startOfWeek } from "date-fns";
 import {
@@ -22,39 +13,28 @@ import {
 } from "@/components/motion/gsap-setup";
 import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
-import { buildGoogleCalendarUrl, buildIcsDataUrl } from "@/services/calendar";
 import { useInvitation } from "../invitation-context";
 import SectionHeading from "./ui/section-heading";
 
 const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
-const ICON_BUTTON =
-  "inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-sand text-wine ring-1 ring-wine/15 transition-[transform,background-color] duration-300 hover:bg-champagne/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wine active:scale-[0.94]";
-const SECONDARY_BUTTON =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-sand px-4 py-3 font-text text-[13px] font-medium whitespace-nowrap text-wine ring-1 ring-wine/15 transition-[transform,background-color] duration-300 hover:bg-champagne/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wine active:scale-[0.97]";
-
 /**
- * Tiệc Báo Hỷ: thẻ tối (ảnh cặp đôi + giờ tiệc + dải tuần) và thẻ địa điểm
- * chồng lên dưới (chỉ đường, chép địa chỉ, lưu vào lịch). Thay mục "Ngày
- * cưới" trên những trang có `content.party`.
+ * Tiệc Báo Hỷ dạng một tấm vé mời: nửa trên tối (ảnh cặp đôi + giờ tiệc +
+ * dải tuần), đường xé có khấc, cuống vé kem (nhà hàng, địa chỉ, sảnh/tầng +
+ * nút chỉ đường). Thay mục "Ngày cưới" trên những trang có `content.party`.
+ * Không dùng quầng sáng/bóng màu: chỉ bóng đổ trung tính nhạt.
  */
 const PartySection: React.FC = () => {
   const content = useInvitation();
   const rootRef = useRef<HTMLElement>(null);
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    if (!copied) return;
-    const timer = setTimeout(() => setCopied(false), 2000);
-    return () => clearTimeout(timer);
-  }, [copied]);
 
   useGSAP(
     () => {
       ensureGsapReady();
       if (prefersReducedMotion()) return;
 
-      // Thẻ tối mở từ dưới lên, ảnh bên trong thu dần về 1 rồi trôi theo cuộn.
+      // Vé mở từ trên xuống (phần khách thấy trước hiện trước), ảnh bên trong
+      // thu dần về 1 rồi trôi theo cuộn.
       gsap
         .timeline({
           scrollTrigger: {
@@ -64,7 +44,7 @@ const PartySection: React.FC = () => {
           },
         })
         .from("[data-party-card]", {
-          clipPath: "inset(100% 0% 0% 0% round 28px)",
+          clipPath: "inset(0% 0% 100% 0% round 28px)",
           duration: 1.2,
           ease: "power3.inOut",
         })
@@ -121,21 +101,19 @@ const PartySection: React.FC = () => {
           "-=0.15",
         );
 
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: "[data-party-venue]",
-            start: "top 92%",
-            toggleActions: REPLAY_TOGGLE_ACTIONS,
-          },
-          defaults: { ease: "power3.out" },
-        })
-        .from("[data-party-venue]", { autoAlpha: 0, y: 36, duration: 0.9 })
-        .from(
-          "[data-party-reveal]",
-          { autoAlpha: 0, y: 14, duration: 0.6, stagger: 0.08 },
-          0.25,
-        );
+      // Cuống vé dính liền thẻ nên không trượt cả khối, chỉ từng dòng hiện lên.
+      gsap.from("[data-party-reveal]", {
+        autoAlpha: 0,
+        y: 14,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: "[data-party-venue]",
+          start: "top 88%",
+          toggleActions: REPLAY_TOGGLE_ACTIONS,
+        },
+      });
     },
     { scope: rootRef },
   );
@@ -150,31 +128,6 @@ const PartySection: React.FC = () => {
   const time =
     content.schedule.find((item) => item.key === "reception")?.value ?? "";
   const dateItem = content.schedule.find((item) => item.key === "date");
-
-  const calendarEvent = {
-    title: `Tiệc Báo Hỷ ${content.firstName} & ${content.secondName}`,
-    description: `Thân mời bạn tới chung vui cùng ${content.firstName} và ${content.secondName}.`,
-    location: `${venue.name}, ${venue.address}`,
-    start: new Date(content.countdownTarget),
-    end: new Date(party.endsAt),
-  };
-
-  const copyAddress = async () => {
-    try {
-      await navigator.clipboard.writeText(venue.address);
-      setCopied(true);
-    } catch {
-      // Trình duyệt chặn clipboard: khách vẫn còn nút chỉ đường.
-    }
-  };
-
-  // Tạo file lúc bấm: DTSTAMP lấy giờ hiện tại, render sẵn sẽ lệch khi hydrate.
-  const downloadIcs = () => {
-    const link = document.createElement("a");
-    link.href = buildIcsDataUrl(calendarEvent);
-    link.download = "tiec-bao-hy.ics";
-    link.click();
-  };
 
   return (
     <section
@@ -200,7 +153,7 @@ const PartySection: React.FC = () => {
 
       <article
         data-party-card
-        className="@container relative mt-10 overflow-hidden rounded-[28px] bg-wine-dark text-[#fff8ec] shadow-[0_40px_70px_-40px_rgba(76,8,14,0.9)]"
+        className="@container relative mt-10 overflow-hidden rounded-[28px] bg-wine-dark text-[#fff8ec] shadow-[0_28px_48px_-36px_rgba(42,24,26,0.45)]"
       >
         <figure className="relative aspect-4/5 overflow-hidden">
           <div data-party-media className="absolute -inset-y-[6%] inset-x-0">
@@ -218,13 +171,7 @@ const PartySection: React.FC = () => {
           />
         </figure>
 
-        {/* Quầng sáng ấm dưới đáy thẻ: cảm giác tiệc tối dưới đèn vàng. */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-32 left-1/2 size-96 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,#efd4aa2e,transparent_65%)]"
-        />
-
-        <div data-party-time className="relative -mt-28 px-6 pb-6">
+        <div data-party-time className="relative -mt-28 px-6 pb-8">
           <p
             data-party-meta
             className="font-text text-[11px] font-medium tracking-[0.28em] text-champagne/85 uppercase"
@@ -281,7 +228,7 @@ const PartySection: React.FC = () => {
                     <span
                       data-party-mark
                       aria-hidden="true"
-                      className="absolute inset-x-0.5 inset-y-0 rounded-full bg-champagne shadow-[0_10px_24px_-8px_#efd4aa99]"
+                      className="absolute inset-x-0.5 inset-y-0 rounded-full bg-champagne"
                     />
                   )}
                   <span
@@ -307,32 +254,63 @@ const PartySection: React.FC = () => {
             })}
           </ol>
         </div>
-      </article>
 
-      <div
-        data-party-venue
-        className="relative z-3 mx-auto -mt-5 w-[92%] rounded-[28px] bg-cream p-6 shadow-[0_24px_50px_-30px_rgba(120,19,29,0.5)] ring-1 ring-wine/10"
-      >
-        <div data-party-reveal className="flex items-start gap-3.5">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-wine/8 text-wine ring-1 ring-wine/15">
-            <MapPin size={20} weight="duotone" aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <h3 className="font-display text-[21px] leading-[1.25] text-balance text-wine">
-              {venue.name}
-            </h3>
-            <address className="mt-1.5 font-text text-[13px] leading-[1.65] text-taupe not-italic">
-              {venue.address}
-            </address>
-          </div>
+        {/* Đường xé của vé: hai khấc tròn màu nền trang cắt vào hai mép. */}
+        <div aria-hidden="true" className="relative">
+          <span className="absolute top-0 -left-3 size-6 -translate-y-1/2 rounded-full bg-linen" />
+          <span className="absolute top-0 -right-3 size-6 -translate-y-1/2 rounded-full bg-linen" />
         </div>
 
-        <div data-party-reveal className="mt-5 flex gap-2.5">
+        <div data-party-venue className="bg-cream px-6 pt-8 pb-6 text-cocoa">
+          <h3
+            data-party-reveal
+            className="font-display text-[24px] leading-[1.22] text-balance text-wine"
+          >
+            {venue.name}
+          </h3>
+          <address
+            data-party-reveal
+            className="mt-2 flex items-start gap-2 font-text text-[13.5px] leading-[1.6] text-taupe not-italic"
+          >
+            <MapPin
+              size={16}
+              weight="duotone"
+              aria-hidden="true"
+              className="mt-0.5 shrink-0 text-wine/70"
+            />
+            {venue.address}
+          </address>
+
+          {venue.hall && (
+            <dl
+              data-party-reveal
+              className="mt-6 grid grid-cols-2 border-y border-dashed border-wine/20"
+            >
+              <div className="py-4 pr-4">
+                <dt className="font-text text-[11px] font-medium tracking-[0.24em] text-taupe uppercase">
+                  Sảnh
+                </dt>
+                <dd className="mt-1.5 font-time text-[22px] leading-none text-wine">
+                  {venue.hall.name}
+                </dd>
+              </div>
+              <div className="border-l border-dashed border-wine/20 py-4 pl-5">
+                <dt className="font-text text-[11px] font-medium tracking-[0.24em] text-taupe uppercase">
+                  Tầng
+                </dt>
+                <dd className="mt-1.5 font-time text-[22px] leading-none text-wine">
+                  {venue.hall.floor}
+                </dd>
+              </div>
+            </dl>
+          )}
+
           <a
+            data-party-reveal
             href={venue.mapUrl}
             target="_blank"
             rel="noreferrer"
-            className="group inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-wine px-5 py-3.5 font-time text-[11px] font-semibold tracking-[2px] whitespace-nowrap text-linen transition-[transform,background-color] duration-300 hover:-translate-y-0.5 hover:bg-wine-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wine active:scale-[0.98]"
+            className="group mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-wine px-6 py-4 font-time text-[12px] font-semibold tracking-[2px] text-linen transition-[transform,background-color] duration-300 hover:-translate-y-0.5 hover:bg-wine-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wine active:scale-[0.98]"
           >
             CHỈ ĐƯỜNG
             <ArrowUpRight
@@ -342,65 +320,8 @@ const PartySection: React.FC = () => {
               className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
           </a>
-          <button
-            type="button"
-            onClick={copyAddress}
-            aria-label={copied ? "Đã chép địa chỉ" : "Chép địa chỉ"}
-            className={ICON_BUTTON}
-          >
-            {copied ? (
-              <Check size={18} weight="bold" aria-hidden="true" />
-            ) : (
-              <Copy size={18} aria-hidden="true" />
-            )}
-          </button>
-          {venue.website && (
-            <a
-              href={venue.website}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Trang web nhà hàng"
-              className={ICON_BUTTON}
-            >
-              <Globe size={18} aria-hidden="true" />
-            </a>
-          )}
         </div>
-
-        <div
-          data-party-reveal
-          className="mt-5 border-t border-dashed border-wine/15 pt-4"
-        >
-          <p className="flex items-center gap-2 font-text text-[13px] font-medium text-cocoa">
-            <CalendarPlus
-              size={16}
-              weight="duotone"
-              aria-hidden="true"
-              className="text-wine"
-            />
-            Lưu vào lịch
-          </p>
-          <div className="mt-3 grid grid-cols-2 gap-2.5">
-            <a
-              href={buildGoogleCalendarUrl(calendarEvent)}
-              target="_blank"
-              rel="noreferrer"
-              className={SECONDARY_BUTTON}
-            >
-              <GoogleLogo size={15} weight="bold" aria-hidden="true" />
-              Google Lịch
-            </a>
-            <button
-              type="button"
-              onClick={downloadIcs}
-              className={SECONDARY_BUTTON}
-            >
-              <DownloadSimple size={15} weight="bold" aria-hidden="true" />
-              Tải file .ics
-            </button>
-          </div>
-        </div>
-      </div>
+      </article>
     </section>
   );
 };

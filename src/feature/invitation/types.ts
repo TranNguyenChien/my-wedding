@@ -41,7 +41,14 @@ export interface InvitationContent {
     value: string;
     note?: string;
   }[];
-  venue: { name: string; address: string; mapUrl: string; website?: string };
+  venue: {
+    name: string;
+    /** Sảnh và tầng trong nhà hàng, hiện thành hai ô trên cuống vé. */
+    hall?: { name: string; floor: string };
+    address: string;
+    mapUrl: string;
+    website?: string;
+  };
   /** Thiệp của buổi lễ còn lại — hiện thành thẻ liên kết ở chân trang. */
   sibling: { href: string; eventName: string; dateShort: string; place: string };
   /** Hero chỉ hiện ảnh — ẩn tên, ngày và lớp phủ gradient. */

@@ -30,7 +30,7 @@ const ScrollToTop: React.FC = () => {
       tabIndex={visible ? 0 : -1}
       aria-hidden={!visible}
       className={cn(
-        "fixed right-[max(12px,calc(50%-256px+12px))] bottom-4 z-900 grid size-10.5 cursor-pointer place-items-center rounded-full border border-[#f3dfbd]/40 bg-[#5b0e17]/90 text-[#f6ead6] shadow-[0_8px_25px_#23030830] backdrop-blur-sm transition-[opacity,translate] duration-300",
+        "fixed right-[max(12px,calc(50%-256px+12px))] bottom-4 z-900 grid size-10.5 cursor-pointer place-items-center rounded-full border border-[#f3dfbd]/40 bg-[#5b0e17]/90 text-[#f6ead6] shadow-[0_8px_25px_#23030830] transition-[opacity,translate] duration-300",
         visible
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-3 opacity-0",

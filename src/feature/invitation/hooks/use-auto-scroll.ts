@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import { prefersReducedMotion } from "@/components/motion/gsap-setup";
 
-/** Tốc độ cuộn tự động (px/giây). */
-const SPEED = 80;
+/**
+ * Tốc độ cuộn tự động (px/giây). Safari chỉ cuộn theo số nguyên px: ở 60
+ * khung hình/giây, 60px/s là đúng 1px mỗi khung — mức lẻ như 80px/s ra nhịp
+ * 1-1-2px và nhìn rõ bị giật. Muốn nhanh hơn thì nhảy lên 120 (2px/khung).
+ */
+const SPEED = 60;
 /** Chờ intro của hero chạy một nhịp rồi mới bắt đầu cuộn. */
 const START_DELAY_MS = 200;
 /** Thời gian tăng tốc từ 0 lên `SPEED`, để lúc bắt đầu không bị giật. */
@@ -42,7 +46,8 @@ export const useAutoScroll = (active: boolean) => {
 
       const maxY = document.documentElement.scrollHeight - window.innerHeight;
       y = Math.min(y + SPEED * ramp * dt, maxY);
-      window.scrollTo(0, y);
+      // Làm tròn để mọi trình duyệt cùng bước nguyên px như Safari.
+      window.scrollTo(0, Math.round(y));
 
       if (y >= maxY) {
         stop();

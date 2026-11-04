@@ -75,7 +75,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ isOpen }) => {
       }
       className={cn(
         "relative overflow-hidden bg-wine-dark",
-        imageOnly ? "aspect-2/3" : "min-h-dvh max-h-225 text-[#fff8ec]",
+        // svh thay vì dvh: dvh đổi chiều cao khi thanh địa chỉ iOS co/giãn
+        // lúc cuộn, kéo cả trang reflow theo.
+        imageOnly ? "aspect-2/3" : "min-h-svh max-h-225 text-[#fff8ec]",
       )}
     >
       <div data-hero-media className="absolute inset-0">

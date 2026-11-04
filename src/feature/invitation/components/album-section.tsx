@@ -180,9 +180,11 @@ const AlbumSection: React.FC = () => {
           OUR MEMORIES
         </span>
         <i aria-hidden="true" className="h-px flex-1 bg-[#b78c71]/25" />
+        {/* pr + -mr: chừa chỗ cho nét bay của chữ "N" tràn qua mép phải
+            mà không đổi vị trí; Safari cắt phần chữ nằm ngoài khung. */}
         <b
           aria-hidden="true"
-          className="font-script text-[27px] leading-none font-normal"
+          className="-mr-[0.3em] pr-[0.3em] font-script text-[27px] leading-none font-normal"
         >
           {content.monogram.first} &amp; {content.monogram.second}
         </b>

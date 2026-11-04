@@ -17,8 +17,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // Extension trình duyệt (vd. LocatorJS) chèn thuộc tính vào <html> trước
+    // khi React hydrate; chỉ bỏ qua lệch thuộc tính ở đúng thẻ này.
     <html
       lang="vi"
+      suppressHydrationWarning
       className={cn(
         pinyonScript.variable,
         playfairBody.variable,
